@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/dkumar-cse/bazinga/issues"
   },
-  "homepage": "https://github.com/dkumar-cse/bazinga#readme"
+  "homepage": "https://github.com/dkumar-cse/bazinga#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
 }
