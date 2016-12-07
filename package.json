@@ -1,0 +1,23 @@
+{
+  "name": "bazinga",
+  "version": "0.1.0",
+  "description": "movire review",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkumar-cse/bazinga.git"
+  },
+  "keywords": [
+    "movie",
+    "review"
+  ],
+  "author": "KumarDivya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dkumar-cse/bazinga/issues"
+  },
+  "homepage": "https://github.com/dkumar-cse/bazinga#readme"
+}
