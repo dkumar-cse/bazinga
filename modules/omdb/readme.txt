@@ -1,0 +1,1 @@
+API domain :  www.omdbapi.com

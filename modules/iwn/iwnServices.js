@@ -1,7 +1,7 @@
 /** 
  * @author : DivyaKumar
  * @date : 15 Dec 2016
- * @info : Starting Point
+ * @info : imdb.wemakesites.net Services
  * 
  */
 
@@ -10,8 +10,8 @@ var rp = require('request-promise');
 var Q = require('q');
 var _ = require('underscore');
 
-var api_key = "5cc92604-a1ff-4d5e-9353-db71e214ea7a";
-var apiDomain = "http://imdb.wemakesites.net/api";
+var apiKey = "5cc92604-a1ff-4d5e-9353-db71e214ea7a";
+var apiDomain = "http://imdb.wemakesites.net";
 
 var iwnServices = module.exports;
 
@@ -21,7 +21,7 @@ this.requestApi = function(apiUrl, params) {
     var options = {
 	    uri: apiUrl,
 	    qs: {// include query params 
-		api_key: api_key  
+		api_key: apiKey  
 	    },
 	    headers: {//include headers		
 	        //'User-Agent': 'Request-Promise'
@@ -42,13 +42,13 @@ this.requestApi = function(apiUrl, params) {
     return deferred.promise;
 }
 
-var constructItemApi = function(itemId) {
-    var apiUrl = apiDomain + itemId;
+var getItemApiUrl = function(itemId) {
+    var apiUrl = apiDomain + "/api/" + itemId;
     return apiUrl;
 }
 
-var constructSearchApi = function(serachText) {
-    var apiUrl = apiDomain + "/search";
+var getSearchApiUrl = function() {
+    var apiUrl = apiDomain + "/api/search";
     return apiUrl;
 }
 
@@ -70,7 +70,7 @@ iwnServices.getItemDetail = function(itemId) {
     var deffered = Q.defer();
     if(validateItemId(itemId) === true) {
 	var params = {};
-	var apiUrl = constructItemApi(itemId);
+	var apiUrl = getItemApiUrl(itemId);
 	
 	this.requestApi(apiUrl, params).then(function(response) {
 	    deffered.resolve(response);
@@ -83,7 +83,7 @@ iwnServices.getSearchResult = function(searchText) {
     var deffered = Q.defer();
     
     if(validateSearchText(searchText) === true) {
-	var apiUrl = constructSearchApi(searchText);
+	var apiUrl = getSearchApiUrl();
 	var params = {};
 	params.q = searchText;
 	
