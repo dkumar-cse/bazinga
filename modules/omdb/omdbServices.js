@@ -160,4 +160,4 @@ omdbServices.getMovieByIdAndTitle = function(id, title, year) {
 
 
 
-module.esports = omdbServices;
+module.exports = omdbServices;

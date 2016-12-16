@@ -1,8 +1,8 @@
-/** 
+/**
  * @author : DivyaKumar
  * @date : 16 Dec 2016
  * @info : api.themoviedb.org Services
- * 
+ *
  */
 
 var rp = require('request-promise');
@@ -28,25 +28,25 @@ this.requestApi = function(apiUrl, params) {
     var options = {
 	    method: 'GET',
 	    uri: apiUrl,
-	    qs: {// include query params   
+	    qs: {// include query params
 		api_key : apiKey
 	    },
-	    headers: {//include headers		
+	    headers: {//include headers
 	        //'User-Agent': 'Request-Promise'
 	    },
-	    json: true // Automatically parses the JSON string in the response 
+	    json: true // Automatically parses the JSON string in the response
 	};
     _.each(params, function(value, key, params) {
 	options.qs[key] = value;
     });
-    
+
     rp(options).then(function(response) {
-	deferred.resolve(response);	
+	deferred.resolve(response);
     })
     .catch(function(err) {
 	deferred.reject(err);
     });
-    
+
     return deferred.promise;
 }
 
@@ -54,7 +54,7 @@ var checkEmpty = function(x) {
     if(undefined==x || null==x){
 	return true;
     }
-    
+
     return false;
 }
 
@@ -69,12 +69,12 @@ tmdbSearchServices.searchMovie = function(searchText, pageNo, includeAdult, regi
     var apiUrl = getTmdbMovieSearchApiUrl();
     var params = {};
     var deffered = Q.defer();
-    
+
     if(validateSearchText(searchText) === false) {// searchText (Movie title to search for.) - mandatory.   Pass a text query to search. This value should be URI encoded
 	deffered.reject({message : "searchText is empty."});
     } else {
 	params.query = searchText; // searchText (Movie title to search for.) - mandatory.  Pass a text query to search. This value should be URI encoded
-	
+
 	if(checkEmpty(pageNo)===false) {// Page number to return - optional, default-1
 	    params.page = pageNo;
 	}
@@ -82,7 +82,7 @@ tmdbSearchServices.searchMovie = function(searchText, pageNo, includeAdult, regi
 	    params.includeAdult = true;
 	}
 	if(checkEmpty(region)===false) {// Specify a ISO 3166-1 code to filter release dates - optional
-	    params.region = region; 
+	    params.region = region;
 	}
 	if(checkEmpty(year)===false) {// Year of release. - optional, default-<empty>
 	    params.year = year;
@@ -91,21 +91,14 @@ tmdbSearchServices.searchMovie = function(searchText, pageNo, includeAdult, regi
 	    params.primaryReleaseYear = primaryReleaseYear;
 	}
 	params.language = 'en-US'; // optional - default-"en-US"
-	
+
 	this.requestApi(apiUrl, params).then(function(response) {
 	    deffered.resolve(response);
 	});
     }
-    
+
     return deffered.promise;
 }
 
 
-
-module.esports = tmdbSearchServices;
-
-
-
-
-
-
+module.exports = tmdbSearchServices;
