@@ -1,8 +1,8 @@
-/** 
+/**
  * @author : DivyaKumar
  * @date : 15 Dec 2016
  * @info : imdb.wemakesites.net Services
- * 
+ *
  */
 
 var request = require('request');
@@ -20,25 +20,27 @@ this.requestApi = function(apiUrl, params) {
     var deferred = Q.defer();
     var options = {
 	    uri: apiUrl,
-	    qs: {// include query params 
-		api_key: apiKey  
+	    qs: {// include query params
+		api_key: apiKey
 	    },
-	    headers: {//include headers		
+	    headers: {//include headers
 	        //'User-Agent': 'Request-Promise'
 	    },
-	    json: true // Automatically parses the JSON string in the response 
+	    json: true // Automatically parses the JSON string in the response
 	};
+
+    // include query params
     _.each(params, function(value, key, params) {
 	options.qs[key] = value;
     });
 
     rp(options).then(function(response) {
-	deferred.resolve(response);	
+	deferred.resolve(response);
     })
     .catch(function(err) {
 	deferred.reject(err);
     });
-    
+
     return deferred.promise;
 }
 
@@ -71,26 +73,26 @@ iwnServices.getItemDetail = function(itemId) {
     if(validateItemId(itemId) === true) {
 	var params = {};
 	var apiUrl = getItemApiUrl(itemId);
-	
+
 	this.requestApi(apiUrl, params).then(function(response) {
 	    deffered.resolve(response);
 	});
-    } 
+    }
     return deffered.promise;
 }
 
 iwnServices.getSearchResult = function(searchText) {
     var deffered = Q.defer();
-    
+
     if(validateSearchText(searchText) === true) {
 	var apiUrl = getSearchApiUrl();
 	var params = {};
 	params.q = searchText;
-	
+
 	this.requestApi(apiUrl, params).then(function(response) {
 	    deffered.resolve(response);
 	});
-    } 
+    }
     return deffered.promise;
 }
 

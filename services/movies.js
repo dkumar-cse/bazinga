@@ -10,11 +10,25 @@ var omdbServices = require('../modules/omdb/omdbServices');
 var tmdbSearchServices = require('../modules/tmdb/tmdbSearchServices');
 var tmdbMovieServices = require('../modules/tmdb/tmdbMovieServices');
 var movieDetailsJson = require('../resources/movieDetailsJson');
+var redis = require('redis');
 
-var as = new movieDetailsJson();
-as.addGenre({18 : "Action"});
-as.setTieRating(3);
-console.log(as);
+// client = redis.createClient();
+// client.get('asd', function(err, reply) {
+//     console.log(reply);
+// });
+//
+// client.set('asd', 'xxxx');
+//
+// client.get('asd', function(err, reply) {
+//     console.log(reply);
+// });
+
+
+
+// var as = new movieDetailsJson();
+// as.addGenre({18 : "Action"});
+// as.setTieRating(3);
+// console.log(as);
 
 //var movies = function(req, res) {
 //    var searchText = req.query.q;
@@ -39,11 +53,12 @@ console.log(as);
 //    });
 //}
 
-var movies = function(req, res) {
-    var searchText = req.query.q;
-    tmdbMovieServices.getMovieDetails(searchText).then(function(result) {
-	res.json(result);
-    });
-}
+// var movies = function(req, res) {
+//     var searchText = req.query.q;
+//     tmdbMovieServices.getMovieDetails(searchText).then(function(result) {
+// 	res.json(result);
+//     });
+// }
 
-module.exports = movies;
+
+//module.exports = movies;

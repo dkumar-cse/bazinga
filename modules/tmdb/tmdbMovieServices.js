@@ -1,8 +1,8 @@
-/** 
+/**
  * @author : DivyaKumar
  * @date : 16 Dec 2016
  * @info : api.themoviedb.org Services
- * 
+ *
  */
 
 var rp = require('request-promise');
@@ -19,33 +19,34 @@ var getMovieDetailsApiUrl = function(movieId) {
 }
 
 this.requestApi = function(apiUrl, params) {
-    
+
     var deferred = Q.defer();
     var options = {
 	    method: 'GET',
 	    uri: apiUrl,
-	    qs: {// include query params   
+	    qs: {// include query params
 		api_key : apiKey
 	    },
-	    headers: {//include headers		
+	    headers: {//include headers
 	        //'User-Agent': 'Request-Promise'
 	    },
 	    json: true, // Automatically parses the JSON string in the response
 	    body: '{}'
-	    
+
 	};
- 
+
+    // include query params
     _.each(params, function(value, key, params) {
 	options.qs[key] = value;
     });
-    
+
     rp(options).then(function(response) {
-	deferred.resolve(response);	
+	deferred.resolve(response);
     })
     .catch(function(err) {
 	deferred.reject(err);
     });
-    
+
     return deferred.promise;
 }
 
@@ -58,7 +59,7 @@ tmdbMovieServices.getMovieDetails = function(movieId) {
     this.requestApi(apiUrl, params).then(function(response) {
 	deffered.resolve(response);
     });
-    
+
     return deffered.promise;
 }
 

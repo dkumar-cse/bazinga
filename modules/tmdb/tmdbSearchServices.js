@@ -36,6 +36,8 @@ this.requestApi = function(apiUrl, params) {
 	    },
 	    json: true // Automatically parses the JSON string in the response
 	};
+    
+    // include query params
     _.each(params, function(value, key, params) {
 	options.qs[key] = value;
     });
