@@ -7,13 +7,15 @@
 var request = require('request');
 var iwnServices = require('../modules/iwn/iwnServices');
 var omdbServices = require('../modules/omdb/omdbServices');
+var tmdbSearchServices = require('../modules/tmdb/tmdbSearchServices');
+var tmdbMovieServices = require('../modules/tmdb/tmdbMovieServices');
 
-var movies = function(req, res) {
-    var searchText = req.query.q;
-    iwnServices.getSearchResult(searchText).then(function(result) {
-	res.json(result);
-    }); 
-}
+//var movies = function(req, res) {
+//    var searchText = req.query.q;
+//    iwnServices.getSearchResult(searchText).then(function(result) {
+//	res.json(result);
+//    }); 
+//}
 
 //var movies = function(req, res) {
 //    var searchText = req.query.q;
@@ -23,5 +25,19 @@ var movies = function(req, res) {
 //	res.json(result);
 //    }); 
 //}
+
+//var movies = function(req, res) {
+//    var searchText = req.query.q;
+//    tmdbSearchServices.searchMovie(searchText).then(function(result) {
+//	res.json(result);
+//    }); 
+//}
+
+var movies = function(req, res) {
+    var searchText = req.query.q;
+    tmdbMovieServices.getMovieDetails(searchText).then(function(result) {
+	res.json(result);
+    }); 
+}
 
 module.exports = movies;
