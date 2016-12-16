@@ -8,6 +8,7 @@
 var request = require('request');
 var rp = require('request-promise');
 var Q = require('q');
+var _ = require('underscore');
 
 var api_key = "5cc92604-a1ff-4d5e-9353-db71e214ea7a";
 var apiDomain = "http://imdb.wemakesites.net/api";
@@ -27,15 +28,16 @@ this.requestApi = function(apiUrl, params) {
 	    },
 	    json: true // Automatically parses the JSON string in the response 
 	};
-    if(params.searchText != null) {
-	options.qs.q = params.searchText;
-    } 
+    _.each(params, function(value, key, params) {
+	options.qs[key] = value;
+    });
+
     rp(options).then(function(response) {
 	deferred.resolve(response);	
     })
     .catch(function(err) {
 	deferred.reject(err);
-    })
+    });
     
     return deferred.promise;
 }
@@ -83,7 +85,7 @@ iwnServices.getSearchResult = function(searchText) {
     if(validateSearchText(searchText) === true) {
 	var apiUrl = constructSearchApi(searchText);
 	var params = {};
-	params.searchText = searchText;
+	params.q = searchText;
 	
 	this.requestApi(apiUrl, params).then(function(response) {
 	    deffered.resolve(response);
