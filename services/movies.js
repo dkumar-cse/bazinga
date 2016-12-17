@@ -5,6 +5,8 @@
  *
  */
 var request = require('request');
+var _ = require('lodash');
+var Q = require('q');
 var iwnServices = require('../modules/iwn/iwnServices');
 var omdbServices = require('../modules/omdb/omdbServices');
 var tmdbSearchServices = require('../modules/tmdb/tmdbSearchServices');
@@ -14,13 +16,44 @@ var omdbMngr = require('../modules/omdb/omdbMngr');
 var movieDetailsJson = require('../resources/movieDetailsJson');
 var redis = require('redis');
 
+var movieGoogler = require('../modules/googleSearch/movieGoogler');
+
+
+
+// movieGoogler.searchMovie("befikre").then(function(response) {
+//     console.log(response);
+// });
+// var customizer = function (objValue, srcValue) {
+//   if (_.isNull(objValue)) {
+//     return srcValue;
+//     } else {
+//         return objValue;
+//     }
+// }
+//
+// var movies = function(req, res) {
+//     var id = req.query.id;
+//     var deffered = Q.defer();
+//     console.log(id);
+//     tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
+//         var imdbId = tmdbResponse.imdbId;
+//         omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+//             var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
+//             console.log(response);
+//             res.json(response);
+//         });
+//     });
+// }
+
+
+
 // tmdbMngr.getMovieDetails('tt0372784').then(function(response) {
 //     console.log(response);
 // });
 
-omdbMngr.getMovieDetails('tt0372784').then(function(response) {
-    console.log(response);
-});
+// omdbMngr.getMovieDetails('tt0372784').then(function(response) {
+//     console.log(response);
+// });
 
 // client = redis.createClient();
 // client.get('asd', function(err, reply) {

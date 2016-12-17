@@ -1,8 +1,8 @@
-/** 
+/**
  * @author : DivyaKumar
  * @date : 15 Dec 2016
  * @info : Starting Point
- * 
+ *
  */
 
 
@@ -20,6 +20,10 @@ app.use(bodyParser.json());
 var router = require('./router');
 app.use('/api', router);
 
+// application -------------------------------------------------------------
+app.get('*', function(req, res) {
+    res.sendFile('./index.html'); // load the single view file (angular will handle the page changes on the front-end)
+});
 
 
 //START THE SERVER

@@ -5,7 +5,7 @@ var movieDetailsJson = function(){}
 
 movieDetailsJson.prototype = {
 
-    id: null,
+    id:  null,
     setId : function(id) {
       this.id = id;
     },
@@ -46,7 +46,7 @@ movieDetailsJson.prototype = {
     },
 
     backdropPic : null,
-    setBackdropPic : function (backdropPic) {
+    setBackdropPic : function (backdropPic) {console.log(backdropPic);
       this.backdropPic = backdropPic;
     },
 
@@ -64,12 +64,16 @@ movieDetailsJson.prototype = {
       this.budget = budget;
     },
 
+    /**
+    * each genre json - {tokenId, name, tmdbId}
+    *
+    */
     genres : [],
     setGenres : function (genres) {
         this.genres = [];
         this.genres = this.genres.concat(genres);;
     },
-    addGenre : function(genre) {
+    addGenre : function(genre) { // each genre json - {tokenId, name, tmdbId}
       this.genres = this.genres.concat(genre);
     },
 
@@ -101,24 +105,25 @@ movieDetailsJson.prototype = {
 
     productionCompanies : [],
     setProductionCompanies : function(productionCompanies) {
-      this.productionCompanies = productionCompanies;
+        this.productionCompanies = [];
+        this.productionCompanies = this.genres.concat(productionCompanies);
     },
     addProductionCompany : function(productionCompany) {
-      this.productionCompanies = this.productionCompanies.concat(productionCompanies);
+        this.productionCompanies = this.productionCompanies.concat(productionCompany);
     },
-
 
     productionCountries : [],
     setProductionCountries : function(productionCountries) {
-      this.productionCountries = productionCountries;
+        this.productionCountries = [];
+        this.productionCountries = this.genres.concat(productionCountries);
     },
     addProductionCountry : function(productionCountry) {
-      this.productionCountries = this.productionCountries.concat(productionCountry);
+        this.productionCountries = this.productionCountries.concat(productionCountry);
     },
 
     releaseDate : null,
     setReleaseDate : function(releaseDate) {
-      this.releaseDate = releaseDate;
+        this.releaseDate = releaseDate;
     },
 
     revenue : null,
@@ -133,10 +138,11 @@ movieDetailsJson.prototype = {
 
     spokenLanguages : [],
     setSpokenLanguages : function(spokenLanguages) {
-      this.spokenLanguages = spokenLanguages;
+        this.spokenLanguages = [];
+        this.spokenLanguages = this.genres.concat(spokenLanguages);
     },
-    addSpokenLanguages : function(spokenLanguage) {
-      this.spokenLanguages = this.spokenLanguages.concat(spokenLanguage);
+    addSpokenLanguage : function(spokenLanguage) {
+        this.spokenLanguages = this.spokenLanguages.concat(spokenLanguage);
     },
 
     voteAverage : null,
@@ -171,31 +177,35 @@ movieDetailsJson.prototype = {
 
     awards : [],
     setAwards : function (awards) {
-      this.awards = awards;
+        this.awards = [];
+        this.awards = this.genres.concat(awards);
     },
     addAwards : function(award) {
-      this.awards = this.awards.concat(award);
+        this.awards = this.awards.concat(award);
     },
 
     directors : [],
     setDirectors : function(directors) {
-      this.directors = directors;
+        this.directors = [];
+        this.directors = this.awards.concat(directors);
     },
     addDirector : function(director) {
-      this.directors = this.directors.concat(director);
+        this.directors = this.directors.concat(director);
     },
 
     writers : [],
     setWriters : function(writers) {
-      this.writers = writers;
+        this.writers = [];
+        this.writers = this.awards.concat(writers);
     },
     addWriter : function(writer) {
-      this.writers = this.writers.concat(writer);
+        this.writers = this.writers.concat(writer);
     },
 
     casts : [],
     setCasts : function(casts) {
-      this.casts = casts;
+        this.casts = [];
+        this.casts = this.writers.concat(casts);
     },
     addCast : function(cast) {
       this.casts = this.casts.concat(cast);
@@ -203,28 +213,30 @@ movieDetailsJson.prototype = {
 
     images : [],
     setImages : function(images) {
-      this.images = images;
+        this.images = [];
+        this.images = this.writers.concat(images);
     },
     addImage : function(image) {
-      this.images = this.images.concat(this.images, image);
+        this.images = this.images.concat(image);
     },
 
     reviews : [],
     setReviews : function(reviews) {
-      this.reviews = reviews;
+        this.reviews = [];
+        this.reviews = this.writers.concat(reviews);
     },
     addReview : function(review) {
-      this.reviews = this.reviews.conact(this.reviews, review);
+        this.reviews = this.reviews.conact(review);
     },
 
     // TMDB
     tmdbVoteCount : null,
     tmdbVoteAverage : null,
     setTmdbVoteCount : function(tmdbVoteCount) {
-      this.tmdbVoteCount = tmdbVoteCount;
+        this.tmdbVoteCount = tmdbVoteCount;
     },
     setTmdbVoteAverage : function(tmdbVoteAverage) {
-      this.tmdbVoteAverage = tmdbVoteAverage;
+        this.tmdbVoteAverage = tmdbVoteAverage;
     },
 
     // IMDB
@@ -232,10 +244,10 @@ movieDetailsJson.prototype = {
     imdbVotes : null,
 
     setImdbRating : function(imdbRating) {
-      this.imdbRating = imdbRating;
+        this.imdbRating = imdbRating;
     },
     setImdbVotes : function(imdbVotes) {
-      this.imdbVotes = imdbVotes;
+        this.imdbVotes = imdbVotes;
     },
 
     // imdb.wemakesites.net

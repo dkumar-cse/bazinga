@@ -5,7 +5,7 @@ var Q = require('q');
 var _ = require('lodash');
 var omdbServices = require('./omdbServices');
 var movieDetailsJson = require('../../resources/movieDetailsJson');
-var tokensJson = require('../../resources/tokensJson');
+var tokenJson = require('../../resources/tokenJson');
 
 var client = redis.createClient();
 
@@ -30,11 +30,6 @@ omdbManager.validImdb = function (imdbId) {
     return true;
 };
 
-var customizer = function (objValue, srcValue) {
-  if (_.isArray(objValue)) {
-    return objValue.concat(srcValue);
-  }
-}
 
 omdbManager.getDirectorsJson = function (directorsNameString) {
     directorsNameString = "Bob Kane (characters), David S. Goyer (story), Christopher Nolan (screenplay), David S. Goyer (screenplay)";
@@ -86,7 +81,7 @@ omdbManager.getMovieDetails = function (imdbId) {
         movieResult.addDirector(omdbManager.getDirectorsJson(response.Director));
         movieResult.setWriters(omdbManager.getWritersJson(response.Writer));
         movieResult.setCasts(omdbManager.getCastsJson(response.Actors));
-        //movieResult.addImage(response.Poster);
+        movieResult.addImage(response.Poster);
 
         movieResult.setTomatoMeter(response.tomatoMeter);
         movieResult.setTomatoRating(response.tomatoRating);
