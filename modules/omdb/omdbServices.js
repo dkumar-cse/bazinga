@@ -115,16 +115,16 @@ omdbServices.getMovieBySearch = function(searchText, year, pageNo) {
 }
 
 
-omdbServices.getByIdAndTitle = function(id, title, type, year) {
+omdbServices.getByIdAndTitle = function(imdbId, title, type, year) {
     var deffered = Q.defer();
     var apiUrl = getOmdbApiUrl();
     var params = {};
 
-    if(checkEmpty(id) === true && checkEmpty(title) === true) {// (A valid IMDb ID) either Id or Title is required for search
-	deffered.reject({message : "both (Id and Title) are empty."});
+    if(checkEmpty(imdbId) === true && checkEmpty(title) === true) {// (A valid IMDb ID) either Id or Title is required for search
+		deffered.reject({message : "both (Id and Title) are empty."});
     }else{
-	if(checkEmpty(id)===false) { // A valid IMDb ID (e.g. tt1285016)
-	    params.i = id;
+	if(checkEmpty(imdbId)===false) { // A valid IMDb ID (e.g. tt1285016)
+	    params.i = imdbId;
 	}
 	if(checkEmpty(title)===false) { // Movie title to search for.
 	    params.t = title;
@@ -148,18 +148,15 @@ omdbServices.getByIdAndTitle = function(id, title, type, year) {
     return deffered.promise;
 }
 
-omdbServices.getMovieByIdAndTitle = function(id, title, year) {
+omdbServices.getMovieByIdAndTitle = function(imdbId, title, year) {
     var deffered = Q.defer();
     var type = itemType.movie;
-    omdbServices.getByIdAndTitle(id, title, type, year).then(function(response) {
+    omdbServices.getByIdAndTitle(imdbId, title, type, year).then(function(response) {
 	deffered.resolve(response);
     });
 
     return deffered.promise;
 }
-
-
-
 
 
 module.exports = omdbServices;

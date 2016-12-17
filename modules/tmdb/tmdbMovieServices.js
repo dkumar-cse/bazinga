@@ -37,14 +37,14 @@ this.requestApi = function(apiUrl, params) {
 
     // include query params
     _.each(params, function(value, key, params) {
-	options.qs[key] = value;
+        options.qs[key] = value;
     });
 
     rp(options).then(function(response) {
-	deferred.resolve(response);
+        deferred.resolve(response);
     })
     .catch(function(err) {
-	deferred.reject(err);
+        deferred.reject(err);
     });
 
     return deferred.promise;
@@ -57,7 +57,7 @@ tmdbMovieServices.getMovieDetails = function(movieId) {
     params.language = 'en-US'; //Pass a ISO 639-1 value to display translated data for the fields that support it. - optional.
     //params.append_to_response = null;  // Append requests within the same namespace to the response
     this.requestApi(apiUrl, params).then(function(response) {
-	deffered.resolve(response);
+        deffered.resolve(response);
     });
 
     return deffered.promise;

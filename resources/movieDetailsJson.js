@@ -11,65 +11,66 @@ movieDetailsJson.prototype = {
     },
 
     tmdbId : null,
-    setTmdbId : function(tmdbId) {
+    setTmdbId : function (tmdbId) {
       this.tmdbId = tmdbId;
     },
 
     imdbId : null,
-    setImdbId : function(imdbId) {
+    setImdbId : function (imdbId) {
       this.imdbId = imdbId;
     },
 
     title : null,
-    setTitle : function(title) {
+    setTitle : function (title) {
       this.title = title;
     },
 
     year : null,
-    setYear : function(year) {
+    setYear : function (year) {
       this.year = year;
     },
 
     status : null,
-    setStatus : function(status) {
+    setStatus : function (status) {
       this.status = status;
     },
 
     tagline : null,
-    setTiagline : function(tagline) {
+    setTagline : function (tagline) {
       this.tagline = tagline;
     },
 
-    adult : null,
-    setAdult : function(adult) {
+    adult : false,
+    setAdult : function (adult) {
       this.adult = adult;
     },
 
     backdropPic : null,
-    setBackdropPic : function(backdropPic) {
+    setBackdropPic : function (backdropPic) {
       this.backdropPic = backdropPic;
     },
 
-    posterPics : {},
-    setPosterPics : function(posterPics) {
+    posterPics : [],
+    setPosterPics : function (posterPics) {
       this.posterPics = posterPics;
     },
-    addPosterPic : function(posterPic) {
-      this.posterPics = _.merge(this.posterPics, posterPics);
+    addPosterPic : function (posterPic) {
+      this.posterPics = this.posterPics.concat(this.posterPics, posterPic);
     },
 
 
     budget : null,
-    setBudget : function(budget) {
+    setBudget : function (budget) {
       this.budget = budget;
     },
 
-    genres : {},
-    setGenres : function(taglgenresine) {
-      this.genres = genres;
+    genres : [],
+    setGenres : function (genres) {
+        this.genres = [];
+        this.genres = this.genres.concat(genres);;
     },
     addGenre : function(genre) {
-      this.genres = _.merge(this.genres, genre);
+      this.genres = this.genres.concat(genre);
     },
 
 
@@ -98,21 +99,21 @@ movieDetailsJson.prototype = {
       this.popularity = popularity;
     },
 
-    productionCompanies : {},
+    productionCompanies : [],
     setProductionCompanies : function(productionCompanies) {
       this.productionCompanies = productionCompanies;
     },
     addProductionCompany : function(productionCompany) {
-      this.productionCompanies = _.merge(this.productionCompanies,productionCompanies);
+      this.productionCompanies = this.productionCompanies.concat(productionCompanies);
     },
 
 
-    productionCountries : {},
+    productionCountries : [],
     setProductionCountries : function(productionCountries) {
       this.productionCountries = productionCountries;
     },
     addProductionCountry : function(productionCountry) {
-      this.productionCountries = _.merge(this.productionCountries,productionCountry);
+      this.productionCountries = this.productionCountries.concat(productionCountry);
     },
 
     releaseDate : null,
@@ -130,12 +131,12 @@ movieDetailsJson.prototype = {
       this.duration = duration;
     },
 
-    spokenLanguages : {},
+    spokenLanguages : [],
     setSpokenLanguages : function(spokenLanguages) {
       this.spokenLanguages = spokenLanguages;
     },
     addSpokenLanguages : function(spokenLanguage) {
-      this.spokenLanguages = _.merge(this.spokenLanguages, spokenLanguage);
+      this.spokenLanguages = this.spokenLanguages.concat(spokenLanguage);
     },
 
     voteAverage : null,
@@ -159,56 +160,61 @@ movieDetailsJson.prototype = {
     },
 
     certificate : null,
-    setCertificate : function(certificate) {
+    setCertificate : function (certificate) {
       this.certificate = certificate;
     },
 
-    awards : {},
-    setAwards : function(awards) {
+    awardInfo : null,
+    setAwardInfo : function (awardInfo) {
+        this.awardInfo = awardInfo;
+    },
+
+    awards : [],
+    setAwards : function (awards) {
       this.awards = awards;
     },
     addAwards : function(award) {
-      this.awards = _.merge(this.awards, award);
+      this.awards = this.awards.concat(award);
     },
 
-    directors : {},
+    directors : [],
     setDirectors : function(directors) {
       this.directors = directors;
     },
     addDirector : function(director) {
-      this.directors = _.merge(this.directors, director);
+      this.directors = this.directors.concat(director);
     },
 
-    writers : {},
+    writers : [],
     setWriters : function(writers) {
       this.writers = writers;
     },
     addWriter : function(writer) {
-      this.writers = _.merge(this.writers, writer);
+      this.writers = this.writers.concat(writer);
     },
 
-    casts : {},
+    casts : [],
     setCasts : function(casts) {
       this.casts = casts;
     },
     addCast : function(cast) {
-      this.casts = _.merge(this.casts, cast);
+      this.casts = this.casts.concat(cast);
     },
 
-    images : {},
+    images : [],
     setImages : function(images) {
       this.images = images;
     },
     addImage : function(image) {
-      this.images = _.merge(this.images, image);
+      this.images = this.images.concat(this.images, image);
     },
 
-    reviews : {},
+    reviews : [],
     setReviews : function(reviews) {
       this.reviews = reviews;
     },
     addReview : function(review) {
-      this.reviews = _.merge(this.reviews, review);
+      this.reviews = this.reviews.conact(this.reviews, review);
     },
 
     // TMDB
@@ -302,7 +308,9 @@ movieDetailsJson.prototype = {
       this.bhReviews = bhReviews;
     },
 
-    // Rotten Tommatoes
+
+
+    // Rotten Tommatoes - ( get from OMDB)
     tomatoMeter : null,
     setTomatoMeter : function(tomatoMeter) {
       this.tomatoMeter = tomatoMeter;

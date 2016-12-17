@@ -9,8 +9,18 @@ var iwnServices = require('../modules/iwn/iwnServices');
 var omdbServices = require('../modules/omdb/omdbServices');
 var tmdbSearchServices = require('../modules/tmdb/tmdbSearchServices');
 var tmdbMovieServices = require('../modules/tmdb/tmdbMovieServices');
+var tmdbMngr = require('../modules/tmdb/tmdbMngr');
+var omdbMngr = require('../modules/omdb/omdbMngr');
 var movieDetailsJson = require('../resources/movieDetailsJson');
 var redis = require('redis');
+
+// tmdbMngr.getMovieDetails('tt0372784').then(function(response) {
+//     console.log(response);
+// });
+
+omdbMngr.getMovieDetails('tt0372784').then(function(response) {
+    console.log(response);
+});
 
 // client = redis.createClient();
 // client.get('asd', function(err, reply) {
