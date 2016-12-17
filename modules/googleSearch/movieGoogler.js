@@ -1,11 +1,22 @@
-"use strict";
+/**
+ * @author : DivyaKumar
+ * @date : 18 Dec 2016
+ * @info : Google Movie Search
+ *
+ */
+
+ "use strict";
 
 var rp = require('request-promise');
 var Q = require('q');
 
-var apiKey = "AIzaSyCQuKNAg0xXhdAbVCPprilonjC84LmWQoY";
-var customSearchEngineId = "007813257805742696303:b0gaxbkcnia";
-var searchApi = "https:\/\/www.googleapis.com\/customsearch\/v1";
+var google = require('googleapis');
+var customsearch = google.customsearch('v1');
+
+
+const CX = '007813257805742696303:b0gaxbkcnia';  // CUSTOM SEARCH ENGINE ID
+const API_KEY = 'AIzaSyCQuKNAg0xXhdAbVCPprilonjC84LmWQoY';  // GOOGLE API KEY
+//const SEARCH_API = 'https:\/\/www.googleapis.com\/customsearch\/v1';  //  GOOGLE
 
 var movieGoogler = module.exports;
 
@@ -14,15 +25,30 @@ var movieGoogler = module.exports;
 *
 */
 
+movieGoogler.searchMovie = function (movieQuery) {
+    var deferred = Q.defer();
+    customsearch.cse.list({ cx: CX, q: movieQuery, auth: API_KEY }, function (err, resp) {
+        if (err) {
+            deferred.reject(err);
+        }
+        // Got the response from custom search
+        if (resp.items && resp.items.length > 0) {
+            deferred.resolve(resp);
+        }
+    });
 
+    return deferred.promise;
+};
+
+/*
 movieGoogler.searchMovie = function(movieQuery) {
     var deferred = Q.defer();
     var options = {
 	    method: 'GET',
-	    uri: searchApi,
+	    uri: SEARCH_API,
 	    qs: {// include query params
-            key : apiKey,
-            cx : customSearchEngineId,
+            key : API_KEY,
+            cx : CX,
             q : movieQuery
 	    },
 	    headers: {//include headers
@@ -41,6 +67,6 @@ movieGoogler.searchMovie = function(movieQuery) {
 
     return deferred.promise;
 };
-
+*/
 
 module.exports = movieGoogler;
