@@ -8,7 +8,7 @@
 var request = require('request');
 var rp = require('request-promise');
 var Q = require('q');
-var _ = require('underscore');
+var _ = require('lodash');
 
 var apiKey = "5cc92604-a1ff-4d5e-9353-db71e214ea7a";
 var apiDomain = "http://imdb.wemakesites.net";

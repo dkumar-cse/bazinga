@@ -7,7 +7,7 @@
 
 var rp = require('request-promise');
 var Q = require('q');
-var _ = require('underscore');
+var _ = require('lodash');
 
 var apiKey = "5467af4d9df8b89c6b8de0218f3d342b";
 var apiDomain = "https://api.themoviedb.org";
@@ -36,7 +36,7 @@ this.requestApi = function(apiUrl, params) {
 	    },
 	    json: true // Automatically parses the JSON string in the response
 	};
-    
+
     // include query params
     _.each(params, function(value, key, params) {
 	options.qs[key] = value;

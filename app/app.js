@@ -1,7 +1,7 @@
 /**
  * @author : DivyaKumar
  * @date : 15 Dec 2016
- * @info : Starting Point
+ * @info : Starting Point ( SEVRER )
  *
  */
 
@@ -17,12 +17,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // LOAD and REGISTER All ROUTES
-var router = require('./router');
-app.use('/api', router);
+var apiRouter = require('./apiRouter');
+app.use('/api', apiRouter);
+
+//  get App Root
+var pathsplit = __dirname.split("/");
+pathsplit[pathsplit.length - 1] = "";
+var appRootPath = pathsplit.join("/");
+
 
 // application -------------------------------------------------------------
+app.get('/movies', function(req, res) {
+    res.sendFile(__dirname + '/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+});
+
 app.get('*', function(req, res) {
-    res.sendFile('./index.html'); // load the single view file (angular will handle the page changes on the front-end)
+    console.log(req.url);
+    res.sendFile( appRootPath + req.url); // load the single view file (angular will handle the page changes on the front-end)
 });
 
 
