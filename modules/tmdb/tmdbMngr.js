@@ -58,7 +58,7 @@ tmdbMngr.getMovieDetails = function (movieId) {
         /*
          * Set movieResult Values
          *
-         */console.log(tmdbMngr.generateImageUrl(response.backdrop_path));console.log(response.backdrop_path);
+         */
         movieResult.setBackdropPic(tmdbMngr.generateImageUrl(response.backdrop_path));
         movieResult.setTmdbId(response.id);
         if(tmdbMngr.validImdb(response.imdb_id) === true) {
@@ -109,7 +109,6 @@ tmdbMngr.getMovieDetails = function (movieId) {
             newToken.setValue(tmdbCountry.name);
             movieResult.addProductionCountry(newToken);
         });
-
         movieResult.setReleaseDate(response.release_date);
         movieResult.setRevenue(response.revenue);
         movieResult.setDuration(response.runtime);
@@ -123,7 +122,6 @@ tmdbMngr.getMovieDetails = function (movieId) {
             newToken.setValue(tmdbLanguage.name);
             movieResult.addSpokenLanguage(newToken);
         });
-
         movieResult.setTmdbVoteAverage(response.vote_average);
         movieResult.setTmdbVoteCount(response.vote_count);
 

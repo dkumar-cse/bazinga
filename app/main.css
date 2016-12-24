@@ -1,0 +1,251 @@
+.headerIcon {
+  /* Bootstrap Overrides */
+  /* OLD STYLES */ }
+  .headerIcon .header {
+    padding: 25px;
+    width: 100%; }
+  .headerIcon .header,
+  .headerIcon .header *:before,
+  .headerIcon .header *:after {
+    box-sizing: border-box; }
+  .headerIcon [class^="icon-"]:before,
+  .headerIcon [class*=" icon-"]:before {
+    font-family: "icomoon";
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    text-transform: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; }
+  .headerIcon .icon-home:before {
+    content: "\e900"; }
+  .headerIcon .icon-clock:before {
+    content: "\e94e"; }
+  .headerIcon .icon-user-plus:before {
+    content: "\e973"; }
+  .headerIcon .icon-google-plus2:before {
+    content: "\ea89"; }
+  .headerIcon .icon-youtube4:before {
+    content: "\ea9a"; }
+  .headerIcon .icon-settings:before {
+    content: "\e600"; }
+  .headerIcon md-progress-circular {
+    margin-bottom: 20px; }
+  .headerIcon header {
+    overflow: hidden; }
+  .headerIcon header h1 {
+    color: #888;
+    font-size: 36px;
+    font-weight: 300; }
+  .headerIcon .container {
+    margin: 0 auto;
+    max-width: 1200px;
+    min-width: 960px;
+    padding: 40px 40px;
+    font: 14px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  .headerIcon .glyph {
+    border-bottom: 1px dotted #ccc;
+    padding: 10px 0 20px;
+    margin-bottom: 20px; }
+  .headerIcon .preview-scale,
+  .headerIcon .preview-glyphs {
+    display: flex;
+    flex-direction: row; }
+  .headerIcon .preview-scale {
+    color: #888;
+    font-size: 12px;
+    margin-top: 24px; }
+  .headerIcon .step {
+    flex-grow: 1;
+    line-height: 0.5; }
+  .headerIcon .usage {
+    margin-top: 10px; }
+  .headerIcon .usage input {
+    font-family: monospace;
+    text-align: center; }
+  .headerIcon .usage .point {
+    width: 150px; }
+  .headerIcon .usage .class {
+    width: 250px; }
+  .headerIcon md-radio-button {
+    display: inline-block; }
+  .headerIcon .loading {
+    background-color: black;
+    filter: alpha(opacity=40);
+    height: 100%;
+    left: 0;
+    opacity: .40;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 90; }
+  .headerIcon .loading md-progress-circular {
+    left: 50%;
+    position: fixed;
+    top: 48%;
+    z-index: 100; }
+
+
+#top_header {
+    height: 5.5rem;
+    top: 0;
+    left: 0;
+    z-index: 5000200;
+    width: 100%;
+    font-size: .9rem;
+    background-color: transparent;
+}
+#primary_nav {
+    display: table;
+    vertical-align: middle;
+    height: 5.5rem;
+    width: 100%;
+}
+.headerIcon {
+    float: left;
+}
+.inset_right2 {
+    padding-right: 2.5vw;
+}
+.inset_left2 {
+    padding-left: 2.5vw;
+}
+.primary_nav_row {
+    display: table-row;
+}
+
+#primary_menu_wrapper {
+    width: 48%;
+    padding-right: 1%;
+    display: table-cell;
+    vertical-align: middle;
+    color: #FFF;
+    position: relative;
+    font-weight: bold;
+}
+.movie_body_header {
+    margin-top: -109px;
+}
+.movie_body_header_row {
+    /*display: inline-flex;
+    width: 200px;
+    height: 200px;
+    background-color: red;*/
+    display: inline-flex;
+}
+.movie_body_header_left_part {
+    /*width: 600px;*/
+}
+.movie_info_header {
+    background-color: rgba(0,0,0,0.6);
+    padding: 25px;
+    margin-top: 120px;
+    display: inline-block;
+    margin-left: 50px;
+    color: #e0d9d9;
+    margin-bottom: 50px;
+}
+.movie_page_title {
+    font-size: 1.3rem;
+    line-height: 2.3rem;
+}
+.oswald {
+    font-family: 'Oswald',"proxima_nova","HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,sans-serif;
+    letter-spacing: .05rem;
+}
+
+.title_bump {
+    border-top: 1px solid #ccc;
+}
+.title_bump::before {
+    content: '';
+    display: block;
+    height: 4px;
+    width: 120px;
+    background-color: #fdd030;
+    margin-bottom: .3rem;
+}
+.movie_page_tagline {
+    margin-left: 3px;
+}
+.directed_by_row {
+    /*float: left;*/
+    margin-left: 3px;
+    margin-top: 80px;
+}
+.directed_by {
+    width: 100px;
+}
+.directed_by_names {
+    padding-top: 3px;
+}
+.directed_by_name {
+    padding: 1px;
+    margin-left: 60px;
+}
+
+.rating_box {
+    width: 350px;
+    height: 300px;
+    background-color: rgba(0,0,0,0.2);
+    float: right;
+    margin-left: 650px;
+    margin-top: 150px;
+    margin-bottom: 50px;
+}
+.movie_rating_row {
+
+}
+.rating_value {
+    float: left;
+    font-size: 35px;
+}
+.rating_name {
+    padding-top: 18px;
+    margin-left: 60px;
+}
+.rating_row_adjust {
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.center_body {
+    width: 1000px;
+    margin: auto;
+}
+.movie_detail_text {
+    padding-top: 30px;
+    padding-bottom: 15px;
+    font-size: 20px;
+    padding-left: 2px;
+    font-weight: bold;
+}
+.center_body_adjust {
+    padding-left: 30px;
+}
+.overview {
+    padding-left: 20px;
+    padding-top: 20px;
+}
+.overview_text {
+    font-weight: bold;
+}
+.overview_content {
+    padding-top: 3px;
+    font-size: 15px;
+    letter-spacing: 1px;
+    padding-left: px;
+    line-height: 20px;
+}
+
+.listdemoBasicUsage md-divider {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+.movie_items_box {
+    padding-top: 30px;
+}

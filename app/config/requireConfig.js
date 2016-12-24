@@ -45,6 +45,9 @@ require.config({
         //  moviepage
         moviepage    :   'app/sections/movie/components/moviepage',
 
+        // HeaderCtrl
+        header    :   'app/sections/header/components/header',
+
     },
 
     shim: {
@@ -56,10 +59,19 @@ require.config({
         homepage : {
             deps: [
                 'angular',
-                'ngRoute'
+                'ngRoute',
+                'header'
             ],
             exports: 'homepage'
         },
+        header : {
+            deps: [
+                'angular',
+                'ngRoute',
+            ],
+            exports: 'header'
+        },
+
         ngMaterial : {
             deps: [
                 'angular',

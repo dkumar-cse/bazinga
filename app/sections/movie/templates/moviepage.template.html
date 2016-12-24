@@ -1,11 +1,109 @@
-<md-card>
- <img src="app/img/bazinga.png" class="md-card-image" alt="image caption">
- <md-card-content>
-   <h2>Card headline</h2>
-   <p>Card content</p>
- </md-card-content>
- <md-card-actions layout="row" layout-align="end center">
-   <md-button>Action 1</md-button>
-   <md-button>Action 2</md-button>
- </md-card-actions>
-</md-card>
+
+<div class="movie_page">
+    <!-- movie body header start -->
+    <div class="movie_body_header" style="background-image: url(http://image.tmdb.org/t/p/original/65JWXDCAfwHhJKnDwRnEgVB411X.jpg);background-size:cover;">
+        <div class="movie_body_header_row">
+            <div class="movie_body_header_left_part" >
+                <div class="movie_info_header">
+                    <div class="movie_info_row">
+                        <div class="movie_page_title oswald">
+                            <h1>Batman Begins</h1>
+                        </div>
+                    </div>
+                    <div class="title_bump"></div>
+                    <div class="movie_info_row">
+                        <div class="movie_page_tagline">Evil fears the knight.</div>
+                    </div>
+                    <div class="movie_info_row">
+                        <div class="directed_by_row">
+                            <div class="directed_by">directed by:</div>
+                            <div class="directed_by_names">
+                                <div class="directed_by_name">Bob Kane (characters)</div>
+                                <div class="directed_by_name">David S. Goyer (story)</div>
+                                <div class="directed_by_name">Christopher Nolan (screenplay)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="movie_body_header_right_part" >
+                <div class="rating_box">
+                    <div class="rating_row_adjust">
+                        <div class="movie_rating_row">
+                            <div class="rating_value">7.5</div>
+                            <div class="rating_name">TOI</div>
+                        </div>
+                    </div>
+                    <div class="rating_row_adjust">
+                        <div class="title_bump"></div>
+                    </div>
+                    <div class="rating_row_adjust">
+                        <div class="movie_rating_row">
+                            <div class="rating_value">7.5</div>
+                            <div class="rating_name">TOI</div>
+                        </div>
+                    </div>
+                    <div class="rating_row_adjust">
+                        <div class="title_bump"></div>
+                    </div>
+                    <div class="rating_row_adjust">
+                        <div class="movie_rating_row">
+                            <div class="rating_value">7.5</div>
+                            <div class="rating_name">TOI</div>
+                        </div>
+                    </div>
+                    <div class="rating_row_adjust">
+                        <div class="title_bump"></div>
+                    </div>
+                    <div class="rating_row_adjust">
+                        <div class="movie_rating_row">
+                            <div class="rating_value">7.5</div>
+                            <div class="rating_name">TOI</div>
+                        </div>
+                    </div>
+                    <div class="rating_row_adjust">
+                        <div class="title_bump"></div>
+                    </div>
+                    <div class="rating_row_adjust">
+                        <div class="movie_rating_row">
+                            <div class="rating_value">7.5</div>
+                            <div class="rating_name">TOI</div>
+                        </div>
+                    </div>
+                    <div class="rating_row_adjust">
+                        <div class="title_bump"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- movie body header END -->
+
+    <!-- center ribbon start -->
+    <div class="center_ribbon">
+    </div>
+
+    <!-- center ribbon end -->
+    <div class="center_body">
+        <div class="center_body_adjust">
+            <div class="movie_detail_text">Movie Details:</div>
+            <div class="title_bump"></div>
+            <!-- Overview -  start -->
+            <div class="overview">
+                <div class="overview_text">Overview:</div>
+                <div class="overview_content">
+                    Driven by tragedy, billionaire Bruce Wayne dedicates his life to uncovering and defeating the corruption that plagues his home, Gotham City.  Unable to work within the system, he instead creates a new identity, a symbol of fear for the criminal underworld - The Batman.
+                </div>
+                <div class="overview_content">
+                    When his parents are killed, billionaire playboy Bruce Wayne relocates to Asia where he is mentored by Henri Ducard and Ra's Al Ghul in how to fight evil. When learning about the plan to wipe out evil in Gotham City by Ducard, Bruce prevents this plan from getting any further and heads back to his home. Back in his original surroundings, Bruce adopts the image of a bat to strike fear into the criminals and the corrupt as the icon known as 'Batman'. But it doesn't stay quiet for long.
+                </div>
+            </div>
+            <!-- Overview -  end -->
+
+            <ng-include src="'app/sections/movie/templates/movieItemsBox.template.html'"></ng-include>
+
+        </div>
+    </div>
+</div>

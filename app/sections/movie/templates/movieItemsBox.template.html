@@ -1,0 +1,97 @@
+<div class="movie_items_box">
+    <div class="listdemoBasicUsage" ng-cloak layout-gt-sm="row" layout="column">
+        <div flex-gt-sm="50" flex>
+
+            <!-- <md-toolbar layout="row" class="md-hue-3">
+              <div class="md-toolbar-tools">
+                <span>Normal</span>
+              </div>
+            </md-toolbar> -->
+
+            <md-content>
+              <md-list flex>
+
+                <md-subheader class="md-no-sticky">Directors :</md-subheader>
+                <md-list-item class="md-2-line" ng-repeat="director in directors" ng-click="null">
+                  <img ng-src="{{director.face}}?{{$index}}" class="md-avatar" alt="{{director.who}}" />
+                  <div class="md-list-item-text" layout="column">
+                    <h3>{{ director.who }}</h3>
+                    <p>{{ director.notes }}</p>
+                  </div>
+                </md-list-item>
+
+                <md-divider ></md-divider>
+
+                <md-subheader class="md-no-sticky">Writers :</md-subheader>
+                <md-list-item class="md-2-line" ng-repeat="writer in writers" ng-click="null">
+                  <img ng-src="{{writer.face}}?{{$index}}" class="md-avatar" alt="{{writer.who}}" />
+                  <div class="md-list-item-text" layout="column">
+                    <h3>{{ writer.who }}</h3>
+                    <p>{{ writer.notes }}</p>
+                  </div>
+                </md-list-item>
+
+                <md-divider ></md-divider>
+
+                <md-subheader class="md-no-sticky">Casts :</md-subheader>
+                <md-list-item class="md-2-line" ng-repeat="cast in casts" ng-click="null">
+                  <img ng-src="{{cast.face}}?{{$index}}" class="md-avatar" alt="{{cast.who}}" />
+                  <div class="md-list-item-text" layout="column">
+                    <h3>{{ cast.who }}</h3>
+                    <p>{{ cast.notes }}</p>
+                  </div>
+                </md-list-item>
+              </md-list>
+            </md-content>
+          </div>
+
+          <md-divider></md-divider>
+
+          <div flex-gt-sm="50" flex>
+
+            <!-- <md-toolbar layout="row" class="md-hue-3">
+              <div class="md-toolbar-tools">
+                <span>Info</span>
+              </div>
+            </md-toolbar> -->
+
+            <md-content>
+
+              <md-list class="md-dense" flex>
+                <md-list-item class="md-1-line">
+                    <div class="item_header">Awards :</div>
+                    <div class="item_info">Awards jshdgfjkhg khjdFGHJ</div>
+                </md-list-item>
+                <md-list-item class="md-1-line">
+                    <div class="item_header">Spoken Languages :</div>
+                    <div class="item_info">Hindi, English, Tamil</div>
+                </md-list-item>
+                <md-list-item class="md-1-line">
+                    <div class="item_header">Genres :</div>
+                    <div class="item_info">Action, Crime, Drama</div>
+                </md-list-item>
+                <md-list-item class="md-1-line">
+                    <div class="item_header">Production Companies :</div>
+                    <div class="item_info">Awards jshdgfjkhg khjdFGHJ</div>
+                </md-list-item>
+                <md-list-item class="md-1-line">
+                    <div class="item_header">Duration :</div>
+                    <div class="item_info">140 min</div>
+                </md-list-item>
+                <md-list-item class="md-1-line">
+                    <div class="item_header">Release Date :</div>
+                    <div class="item_info">21 Jan 2016</div>
+                </md-list-item>
+                <md-list-item class="md-1-line">
+                    <div class="item_header">Year :</div>
+                    <div class="item_info">2016</div>
+                </md-list-item>
+
+                <md-divider ></md-divider>
+
+              </md-list>
+            </md-content>
+          </div>
+        </div>
+    </div>
+</div>

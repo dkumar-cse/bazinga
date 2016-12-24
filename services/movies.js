@@ -23,27 +23,27 @@ var movieGoogler = require('../modules/googleSearch/movieGoogler');
 // movieGoogler.searchMovie("befikre").then(function(response) {
 //     console.log(response);
 // });
-// var customizer = function (objValue, srcValue) {
-//   if (_.isNull(objValue)) {
-//     return srcValue;
-//     } else {
-//         return objValue;
-//     }
-// }
-//
-// var movies = function(req, res) {
-//     var id = req.query.id;
-//     var deffered = Q.defer();
-//     console.log(id);
-//     tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
-//         var imdbId = tmdbResponse.imdbId;
-//         omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
-//             var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
-//             console.log(response);
-//             res.json(response);
-//         });
-//     });
-// }
+var customizer = function (objValue, srcValue) {
+
+  if (_.isNull(objValue) || objValue=="") {
+    return srcValue;
+    } else {
+        return objValue;
+    }
+};
+
+var movies = function(req, res) {
+    var id = req.query.id;
+    var deffered = Q.defer();
+    tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
+        var imdbId = tmdbResponse.imdbId;
+        omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+
+            var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
+            res.json(response);
+        });
+    });
+};
 
 
 
@@ -104,4 +104,4 @@ var movieGoogler = require('../modules/googleSearch/movieGoogler');
 // }
 
 
-//module.exports = movies;
+module.exports = movies;

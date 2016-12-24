@@ -1,0 +1,54 @@
+<div id="top_header">
+    <div id="primary_nav" class="inset_left2 inset_right2">
+        <div class="primary_nav_row">
+    <div class="headerIcon">
+<div ng-controller="HeaderController" ng-cloak >
+  <div class="glyph" layout="row">
+    <div flex layout-align="center center" style="text-align: center;" layout="column">
+      <div flex></div>
+      <div class="preview-glyphs">
+        <md-icon md-font-icon="{{ font.name }}"
+            ng-style="{color: !font.theme && font.color, 'font-size': size.size + 'px', height: size.size + 'px'}"
+            ng-class="font.theme"
+            aria-label="{{ font.name + size.size }}"
+            class="step "></md-icon>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- For this demo, include the font-faces needed by mdIcon above -->
+  <style>
+    @font-face {
+      font-family:"icomoon";
+      src:url("https://cdn.rawgit.com/angular/material/master/docs/app/fonts/icomoon.eot");
+      font-weight:normal;
+      font-style:normal;
+    }
+
+    @font-face {
+      font-family: 'icomoon';
+      src:url('https://cdn.rawgit.com/angular/material/master/docs/app/fonts/icomoon.eot?-cmq1um');
+      src:url('https://cdn.rawgit.com/angular/material/master/docs/app/fonts/icomoon.eot?#iefix-cmq1um') format('embedded-opentype'),
+      url('https://cdn.rawgit.com/angular/material/master/docs/app/fonts/icomoon.woff?-cmq1um') format('woff'),
+      url('https://cdn.rawgit.com/angular/material/master/docs/app/fonts/icomoon.ttf?-cmq1um') format('truetype'),
+      url('https://cdn.rawgit.com/angular/material/master/docs/app/fonts/icomoon.svg?-cmq1um#icomoon') format('svg');
+      font-weight: normal;
+      font-style: normal;
+    }
+  </style>
+</div>
+
+</div>
+
+<div id="primary_menu_wrapper">
+
+<md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+      <md-nav-item md-nav-click="goto('page1')" name="page1">Page One</md-nav-item>
+      <md-nav-item md-nav-click="goto('page2')" name="page2">Page Two</md-nav-item>
+      <md-nav-item md-nav-click="goto('page3')" name="page3">Page Three</md-nav-item>
+
+</md-nav-bar>
+</div>
+</div>
+</div>

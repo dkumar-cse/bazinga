@@ -9,7 +9,7 @@
     //     ]
     // });
 
-define(['boost'], function (app) {
+define(['boost', 'header'], function (app) {
     app.controller('homepageController', function ($scope) {
         //$scope.message = "Message from HomeCtrl";
     });
