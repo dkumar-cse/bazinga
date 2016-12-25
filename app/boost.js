@@ -6,9 +6,9 @@
 *
 */
 
-define(['angularAMD', 'ngRoute', 'ngMaterial', 'ngAnimate', 'ngAria', 'header'], function(angularAMD) {
+define(['angularAMD', 'ngRoute', 'ngMaterial', 'ngAnimate', 'ngAria', 'ngResource', 'header'], function(angularAMD) {
     console.log("start loading app....");
-    var app = angular.module("webapp", ['ngRoute', 'ngMaterial', 'ngAnimate', 'ngAria', 'header']);
+    var app = angular.module("webapp", ['ngRoute', 'ngMaterial', 'ngAnimate', 'ngAria', 'ngResource', 'header']);
     app.config(['$locationProvider', '$routeProvider',function config($locationProvider, $routeProvider) {
             $locationProvider.hashPrefix('!');
             $routeProvider.

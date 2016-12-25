@@ -15,7 +15,7 @@
                 <md-list-item class="md-2-line" ng-repeat="director in directors" ng-click="null">
                   <img ng-src="{{director.face}}?{{$index}}" class="md-avatar" alt="{{director.who}}" />
                   <div class="md-list-item-text" layout="column">
-                    <h3>{{ director.who }}</h3>
+                    <h3>{{ director.name }}</h3>
                     <p>{{ director.notes }}</p>
                   </div>
                 </md-list-item>
@@ -26,7 +26,7 @@
                 <md-list-item class="md-2-line" ng-repeat="writer in writers" ng-click="null">
                   <img ng-src="{{writer.face}}?{{$index}}" class="md-avatar" alt="{{writer.who}}" />
                   <div class="md-list-item-text" layout="column">
-                    <h3>{{ writer.who }}</h3>
+                    <h3>{{ writer.name }}</h3>
                     <p>{{ writer.notes }}</p>
                   </div>
                 </md-list-item>
@@ -37,7 +37,7 @@
                 <md-list-item class="md-2-line" ng-repeat="cast in casts" ng-click="null">
                   <img ng-src="{{cast.face}}?{{$index}}" class="md-avatar" alt="{{cast.who}}" />
                   <div class="md-list-item-text" layout="column">
-                    <h3>{{ cast.who }}</h3>
+                    <h3>{{ cast.name }}</h3>
                     <p>{{ cast.notes }}</p>
                   </div>
                 </md-list-item>
@@ -58,12 +58,12 @@
             <md-content>
 
               <md-list class="md-dense" flex>
-                <md-list-item class="md-1-line">
-                    <div class="item_header">Awards :</div>
-                    <div class="item_info">Awards jshdgfjkhg khjdFGHJ</div>
+                <md-list-item class="md-2-line">
+                    <div class="item_header">Awards:</div>
+                    <div class="item_info">{{ awardInfo }}</div>
                 </md-list-item>
                 <md-list-item class="md-1-line">
-                    <div class="item_header">Spoken Languages :</div>
+                    <div class="item_header">Spoken Languages : </div>
                     <div class="item_info">Hindi, English, Tamil</div>
                 </md-list-item>
                 <md-list-item class="md-1-line">
@@ -76,15 +76,15 @@
                 </md-list-item>
                 <md-list-item class="md-1-line">
                     <div class="item_header">Duration :</div>
-                    <div class="item_info">140 min</div>
+                    <div class="item_info">{{ duration }} min</div>
                 </md-list-item>
                 <md-list-item class="md-1-line">
                     <div class="item_header">Release Date :</div>
-                    <div class="item_info">21 Jan 2016</div>
+                    <div class="item_info">{{ releaseDate }}</div>
                 </md-list-item>
                 <md-list-item class="md-1-line">
                     <div class="item_header">Year :</div>
-                    <div class="item_info">2016</div>
+                    <div class="item_info">{{ releaseYear }}</div>
                 </md-list-item>
 
                 <md-divider ></md-divider>

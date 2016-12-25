@@ -9,60 +9,34 @@
 // })
 
 
-define(['boost'], function (app) {
-    app.controller('moviepageController', function ($scope) {
-        //$scope.message = "Message from HomeCtrl";
-        $scope.directors = [
-            {
-                who : 'Bob Kane (characters)',
-                note : 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                face : 'http://iainglen.com/wp-content/uploads/2015/01/TheEveningStandardInterview.jpg'
-            },
-            {
-                who : 'Bob Kane (characters)',
-                note : 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                face : 'http://iainglen.com/wp-content/uploads/2015/01/TheEveningStandardInterview.jpg'
-            },
-            {
-                who : 'Bob Kane (characters)',
-                note : 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                face : 'http://iainglen.com/wp-content/uploads/2015/01/TheEveningStandardInterview.jpg'
-            },
-        ];
+define(['boost', 'q'], function (app, Q) {
 
-        $scope.writers = [
-            {
-                who : 'Bob Kane (characters)',
-                note : 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                face : 'http://iainglen.com/wp-content/uploads/2015/01/TheEveningStandardInterview.jpg'
-            },
-            {
-                who : 'Bob Kane (characters)',
-                note : 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                face : 'http://iainglen.com/wp-content/uploads/2015/01/TheEveningStandardInterview.jpg'
-            },
-            {
-                who : 'Bob Kane (characters)',
-                note : 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                face : 'http://iainglen.com/wp-content/uploads/2015/01/TheEveningStandardInterview.jpg'
-            },
-        ];
-        $scope.casts = [
-            {
-                who : 'Bob Kane (characters)',
-                note : 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                face : 'http://iainglen.com/wp-content/uploads/2015/01/TheEveningStandardInterview.jpg'
-            },
-            {
-                who : 'Bob Kane (characters)',
-                note : 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                face : 'http://iainglen.com/wp-content/uploads/2015/01/TheEveningStandardInterview.jpg'
-            },
-            {
-                who : 'Bob Kane (characters)',
-                note : 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                face : 'http://iainglen.com/wp-content/uploads/2015/01/TheEveningStandardInterview.jpg'
-            },
-        ];
-    });
+
+
+    app.controller('moviepageController',['$scope', '$routeParams', '$resource', function ($scope, $routeParams, $resource) {
+
+        var movieId = $routeParams.movieId;
+        var queryString = $routeParams.q;
+
+        var MovieService = $resource('/api', {id:movieId, q:queryString});
+        var Movie = MovieService.get({id:movieId}, function(response) {
+
+            //  Render Movie Content  -  START
+
+            $scope.overview = response.overview;
+            $scope.plot = response.plot;
+            $scope.directors = response.directors;
+            $scope.writers = response.writers;
+            $scope.casts = response.casts;
+            $scope.awardInfo = response.awardInfo;
+            $scope.duration = response.duration;
+            $scope.releaseDate = response.releaseDate;
+            $scope.releaseYear = response.year;
+
+            //  Render Movie Content  -  END
+
+
+        });
+
+    }]);
 });
