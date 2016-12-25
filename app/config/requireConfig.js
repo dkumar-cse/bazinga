@@ -25,7 +25,7 @@ require.config({
         angular :   'node_modules/angular/angular',
         ngMaterial :   'node_modules/angular-material/angular-material',
         ngAnimate :   'node_modules/angular-animate/angular-animate',
-        ngResource :   'node_modules/angular-animate/angular-resource',
+        ngResource :   'node_modules/angular-resource/angular-resource',
         ngAria :   'node_modules/angular-aria/angular-aria',
         angularAMD :   'node_modules/angular-amd/angularAMD',
         ngRoute :   'node_modules/angular-route/angular-route.min',
