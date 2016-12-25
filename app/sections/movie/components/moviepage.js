@@ -18,7 +18,7 @@ define(['boost', 'q'], function (app, Q) {
         var movieId = $routeParams.movieId;
         var queryString = $routeParams.q;
 
-        var MovieService = $resource('/api', {id:movieId, q:queryString});
+        var MovieService = $resource('/api/movie', {id:movieId, q:queryString});
         var Movie = MovieService.get({id:movieId}, function(response) {
 
             //  Render Movie Content  -  START

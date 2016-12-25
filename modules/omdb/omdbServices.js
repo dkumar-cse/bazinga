@@ -25,7 +25,7 @@ var itemType = {//Type of result to return.
 
 var getOmdbApiUrl = function() {
     return apiDomain+"/";
-}
+};
 
 this.requestApi = function(apiUrl, params) {
 
@@ -53,7 +53,7 @@ this.requestApi = function(apiUrl, params) {
     });
 
     return deferred.promise;
-}
+};
 
 var checkEmpty = function(x) {
     if(undefined==x || null==x){
@@ -61,14 +61,14 @@ var checkEmpty = function(x) {
     }
 
     return false;
-}
+};
 
 var validateSearchText = function(x) {
     if(checkEmpty(x)===true) {
 	return false;
     }
     return true;
-}
+};
 
 omdbServices.getBySearch = function(searchText, type, year, pageNo) {
     var deffered = Q.defer();
@@ -99,9 +99,11 @@ omdbServices.getBySearch = function(searchText, type, year, pageNo) {
 
 
     return deffered.promise;
-}
+};
 
-omdbServices.getMovieBySearch = function(searchText, year, pageNo) {
+
+
+omdbServices.searchMovie = function(searchText, year, pageNo) {
     var deffered = Q.defer();
     if(validateSearchText(searchText) === true) {
 	var type = itemType.movie;
@@ -112,7 +114,7 @@ omdbServices.getMovieBySearch = function(searchText, year, pageNo) {
     }
 
     return deffered.promise;
-}
+};
 
 
 omdbServices.getByIdAndTitle = function(imdbId, title, type, year) {
@@ -146,7 +148,7 @@ omdbServices.getByIdAndTitle = function(imdbId, title, type, year) {
     }
 
     return deffered.promise;
-}
+};
 
 omdbServices.getMovieByIdAndTitle = function(imdbId, title, year) {
     var deffered = Q.defer();
@@ -156,7 +158,7 @@ omdbServices.getMovieByIdAndTitle = function(imdbId, title, year) {
     });
 
     return deffered.promise;
-}
+};
 
 
 module.exports = omdbServices;

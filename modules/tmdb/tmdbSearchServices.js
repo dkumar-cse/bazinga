@@ -16,11 +16,11 @@ var tmdbSearchServices = module.exports;
 
 var getApiUrlVersion3 = function() {
     return apiDomain + "/" + apiVersion3;
-}
+};
 
 var getTmdbMovieSearchApiUrl = function() {
     return getApiUrlVersion3() + "/search/movie";
-}
+};
 
 this.requestApi = function(apiUrl, params) {
 
@@ -50,22 +50,22 @@ this.requestApi = function(apiUrl, params) {
     });
 
     return deferred.promise;
-}
+};
 
 var checkEmpty = function(x) {
-    if(undefined==x || null==x){
+    if(undefined===x || null===x){
 	return true;
     }
 
     return false;
-}
+};
 
 var validateSearchText = function(x) {
     if(checkEmpty(x)===true) {
 	return false;
     }
     return true;
-}
+};
 
 tmdbSearchServices.searchMovie = function(searchText, pageNo, includeAdult, region, year, primaryReleaseYear) {
     var apiUrl = getTmdbMovieSearchApiUrl();
@@ -100,7 +100,7 @@ tmdbSearchServices.searchMovie = function(searchText, pageNo, includeAdult, regi
     }
 
     return deffered.promise;
-}
+};
 
 
 module.exports = tmdbSearchServices;

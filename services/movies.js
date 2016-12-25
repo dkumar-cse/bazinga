@@ -18,6 +18,7 @@ var redis = require('redis');
 
 var movieGoogler = require('../modules/googleSearch/movieGoogler');
 
+var movies = module.exports;
 
 
 // movieGoogler.searchMovie("befikre").then(function(response) {
@@ -32,7 +33,7 @@ var customizer = function (objValue, srcValue) {
     }
 };
 
-var movies = function(req, res) {
+movies.getMovieByID = function(req, res) {
     var id = req.query.id;
     var deffered = Q.defer();
     tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
@@ -45,6 +46,21 @@ var movies = function(req, res) {
     });
 };
 
+
+movies.searchMovie = function(req, res) {
+    // get all params
+    var queryString = req.query.q;
+    var includeAdult = true; // req.query.ia;
+    var pageNo = req.query.pg;
+    // var region = req.query.rg;
+    var year = req.query.yr;
+    // var primaryReleaseYear = req.query.pry;
+
+    omdbServices.searchMovie(queryString, year, pageNo).then(function(result) {
+        res.json(result);
+    });
+
+};
 
 
 // tmdbMngr.getMovieDetails('tt0372784').then(function(response) {
