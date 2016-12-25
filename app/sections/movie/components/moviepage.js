@@ -30,8 +30,12 @@ define(['boost', 'q'], function (app, Q) {
             $scope.casts = response.casts;
             $scope.awardInfo = response.awardInfo;
             $scope.duration = response.duration;
-            $scope.releaseDate = response.releaseDate;
+            $scope.release_date = response.releaseDate;
+            $scope.release_year = response.year;
+            $scope.poster_pics_url = response.posterPics;
             $scope.releaseYear = response.year;
+            $scope.title = response.title;
+            $scope.backdrop_pic = response.backdropPic;
 
             //  Render Movie Content  -  END
 
