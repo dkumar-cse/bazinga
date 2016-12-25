@@ -21,6 +21,9 @@ require.config({
         omdbServices    :   'modules/omdb/omdbServices',
         omdbMngr    :   'modules/omdb/omdbMngr',
 
+        //  Mongo
+        mongoServices : 'modules/mongo/mongoServices',
+
         // Node modules
         angular :   'node_modules/angular/angular',
         ngMaterial :   'node_modules/angular-material/angular-material',

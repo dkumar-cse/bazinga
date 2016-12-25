@@ -11,6 +11,7 @@ var iwnServices = require('../modules/iwn/iwnServices');
 var omdbServices = require('../modules/omdb/omdbServices');
 var tmdbSearchServices = require('../modules/tmdb/tmdbSearchServices');
 var tmdbMovieServices = require('../modules/tmdb/tmdbMovieServices');
+var mongoServices = require('../modules/mongo/mongoServices');
 var tmdbMngr = require('../modules/tmdb/tmdbMngr');
 var omdbMngr = require('../modules/omdb/omdbMngr');
 var movieDetailsJson = require('../resources/movieDetailsJson');
@@ -26,7 +27,7 @@ var movies = module.exports;
 // });
 var customizer = function (objValue, srcValue) {
 
-  if (_.isNull(objValue) || objValue=="") {
+  if (_.isNull(objValue) || objValue==="") {
     return srcValue;
     } else {
         return objValue;
@@ -35,15 +36,20 @@ var customizer = function (objValue, srcValue) {
 
 movies.getMovieByID = function(req, res) {
     var id = req.query.id;
-    var deffered = Q.defer();
-    tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
-        var imdbId = tmdbResponse.imdbId;
-        omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
-
-            var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
-            res.json(response);
-        });
+    mongoServices.getMovieFromCollection(id).then(function(result){
+        res.json(result);
     });
+    // tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
+    //     var imdbId = tmdbResponse.imdbId;
+    //     omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+    //
+    //         var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
+    //         res.json(response);
+    //     });
+    //
+    // });
+
+
 };
 
 
@@ -52,11 +58,11 @@ movies.searchMovie = function(req, res) {
     var queryString = req.query.q;
     var includeAdult = true; // req.query.ia;
     var pageNo = req.query.pg;
-    // var region = req.query.rg;
+    var region = req.query.rg;
     var year = req.query.yr;
     // var primaryReleaseYear = req.query.pry;
 
-    omdbServices.searchMovie(queryString, year, pageNo).then(function(result) {
+    tmdbSearchServices.searchMovie(queryString, pageNo, includeAdult, region, year, null).then(function(result) {
         res.json(result);
     });
 
