@@ -27,7 +27,7 @@ var movies = module.exports;
 // });
 var customizer = function (objValue, srcValue) {
 
-  if (_.isNull(objValue) || objValue==="") {
+  if (_.isNull(objValue) || objValue=="") {
     return srcValue;
     } else {
         return objValue;
@@ -36,11 +36,23 @@ var customizer = function (objValue, srcValue) {
 
 movies.getMovieByID = function(req, res) {
     var id = req.query.id;
-    tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
-        mongoServices.saveMovieInCollection(tmdbResponse).then(function(result){
-            res.json(result);
-        });
+    tmdbMngr.getMovieCasts(id).then(function(response){
+        res.json(response);
     });
+
+    // tmdbMovieServices.getMoviesCasts(id).then(function(result) {
+    //     res.json(result);
+    // });
+
+    // tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
+    //     var imdbId = tmdbResponse.imdbId;
+    //     omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+    //         var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
+    //         mongoServices.saveMovieInCollection(response).then(function(result){
+    //             res.json(response);
+    //         });
+    //     });
+    // });
 
 
     // mongoServices.getMovieFromCollection(id).then(function(result){

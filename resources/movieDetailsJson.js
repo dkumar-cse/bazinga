@@ -1,7 +1,7 @@
 
 var _ = require('lodash');
 
-var movieDetailsJson = function(){}
+var movieDetailsJson = function(){};
 
 movieDetailsJson.prototype = {
 

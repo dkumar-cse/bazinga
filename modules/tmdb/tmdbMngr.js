@@ -1,5 +1,5 @@
 
-'use strict';
+"use strict";
 var redis = require('redis');
 var Q = require('q');
 var _ = require('lodash');
@@ -132,4 +132,12 @@ tmdbMngr.getMovieDetails = function (movieId) {
     return deffered.promise;
 };
 
+
+tmdbMngr.getMovieCasts = function (movieId) {
+    var deffered = Q.defer();
+    tmdbMovieServices.getMoviesCasts(movieId).then(function(response) {
+        deffered.resolve(response);
+    });
+    return deffered.promise;
+};
 module.exports = tmdbMngr;

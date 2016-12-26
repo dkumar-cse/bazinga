@@ -16,7 +16,11 @@ var tmdbMovieServices = module.exports;
 
 var getMovieDetailsApiUrl = function(movieId) {
     return apiDomain + "/" + apiVersion3 + "/movie/" + movieId;
-}
+};
+
+var getMovieCastsApiUrl = function (movieId) {
+    return apiDomain + "/" + apiVersion3 + "/movie/" + movieId + "/casts";
+};
 
 this.requestApi = function(apiUrl, params) {
 
@@ -48,7 +52,7 @@ this.requestApi = function(apiUrl, params) {
     });
 
     return deferred.promise;
-}
+};
 
 tmdbMovieServices.getMovieDetails = function(movieId) {
     var deffered = Q.defer();
@@ -61,6 +65,18 @@ tmdbMovieServices.getMovieDetails = function(movieId) {
     });
 
     return deffered.promise;
-}
+};
+
+tmdbMovieServices.getMoviesCasts = function (movieId) {
+    var deffered = Q.defer();
+    var apiUrl = getMovieCastsApiUrl(movieId);
+    var params = {};
+    console.log(apiUrl);
+    this.requestApi(apiUrl, params).then(function(response) {
+        deffered.resolve(response);
+    });
+
+    return deffered.promise;
+};
 
 module.exports = tmdbMovieServices;
