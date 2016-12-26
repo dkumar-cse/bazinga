@@ -107,11 +107,8 @@ mongoServices.saveMovieInCollection = function(movieDetailsJson){
              var collectionName = "movies";
              autoIncrement.getNextSequence(db, collectionName, fieldName, function (err, autoIndex) {
                  var collection = db.collection(collectionName);
-                 collection.insert({
-                     _id: autoIndex,
-                     name: "bbbbb"
-
-                 });
+                 movieDetailsJson._id = autoIndex;
+                 collection.insert(movieDetailsJson);
 
                  deffered.resolve({res : "inserted"});
              });
