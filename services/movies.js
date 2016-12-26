@@ -36,9 +36,18 @@ var customizer = function (objValue, srcValue) {
 
 movies.getMovieByID = function(req, res) {
     var id = req.query.id;
-    mongoServices.getMovieFromCollection(id).then(function(result){
-        res.json(result);
+    tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
+        mongoServices.saveMovieInCollection(tmdbResponse).then(function(result){
+            res.json(result);
+        });
     });
+
+
+    // mongoServices.getMovieFromCollection(id).then(function(result){
+    //     res.json(result);
+    // });
+
+
     // tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
     //     var imdbId = tmdbResponse.imdbId;
     //     omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {

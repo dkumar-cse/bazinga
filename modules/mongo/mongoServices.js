@@ -1,5 +1,6 @@
 
 var MongoClient = require('mongodb').MongoClient;
+var autoIncrement = require("mongodb-autoincrement");
 var Server = require('mongodb').Server;
 var Db = require('mongodb').Db;
 var Q = require('q');
@@ -20,7 +21,9 @@ var mongoServices = module.exports;
 
 
 mongoServices.getMovieFromCollection = function(movieId){
+
     var deffered = Q.defer();
+
 /* // NOT WORKING - check Later
 console.log("start");
     // Set up the connection to the local db
@@ -83,6 +86,41 @@ console.log("start4");
 
 
     return deffered.promise;
+};
+
+
+mongoServices.saveMovieInCollection = function(movieDetailsJson){
+    var deffered = Q.defer();
+
+    // Connection URL. This is where your mongodb server is running.
+    var url = 'mongodb://localhost:27017/bazinga';
+
+    // Use connect method to connect to the Server
+    MongoClient.connect(url, function (err, db) {
+        if (err) {
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+        } else {
+            //HURRAY!! We are connected. :)
+             console.log('Connection established to', url);
+
+             var fieldName = "id";
+             var collectionName = "movies";
+             autoIncrement.getNextSequence(db, collectionName, fieldName, function (err, autoIndex) {
+                 var collection = db.collection(collectionName);
+                 collection.insert({
+                     _id: autoIndex,
+                     name: "bbbbb"
+
+                 });
+
+                 deffered.resolve({res : "inserted"});
+             });
+         }
+     });
+
+
+
+     return deffered.promise;
 };
 
 
