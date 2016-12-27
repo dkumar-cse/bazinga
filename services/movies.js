@@ -16,6 +16,7 @@ var tmdbMngr = require('../modules/tmdb/tmdbMngr');
 var omdbMngr = require('../modules/omdb/omdbMngr');
 var movieDetailsJson = require('../resources/movieDetailsJson');
 var redis = require('redis');
+var async = require('async');
 
 var movieGoogler = require('../modules/googleSearch/movieGoogler');
 
@@ -34,12 +35,39 @@ var customizer = function (objValue, srcValue) {
     }
 };
 
-movies.getMovieByID = function(req, res) {
-    var id = req.query.id;
-    tmdbMngr.getMovieCasts(id).then(function(response){
-        res.json(response);
-    });
+movies.checkForHalfResult = function(movieJson) {
+    // check if movieJson is half and we have to make tmdb api callback
+    if(_.isNull(movieJson.title) || movieJson.title==="null") {
+        return true; // empty
+    }
+    return false;
+};
 
+movies.getMovieByID = function(req, res) {
+    var movieId = req.query.id;
+
+    // tmdbMngr.getMovieCasts(id).then(function(response){
+    //     res.json(response);
+    // });
+
+    mongoServices.getMovieFromCollection(movieId).then(function (result) {
+        if(movies.checkForHalfResult(result)===true) {
+            var tmdbId = result.tmdbId;
+            tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {
+                var imdbId = tmdbResponse.imdbId;
+                omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+                    var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
+                    response.id = result._id;
+                    response._id = result._id;
+                    mongoServices.updateMovieInCollection(response).then(function(result){
+                        res.json(result.result);
+                    });
+                });
+            });
+        } else {
+            res.json(result);
+        }
+    });
     // tmdbMovieServices.getMoviesCasts(id).then(function(result) {
     //     res.json(result);
     // });
@@ -73,6 +101,58 @@ movies.getMovieByID = function(req, res) {
 
 };
 
+movies.mergeIn = function (a1, a2) {
+    var deffered = Q.defer();
+    a1.push(a2);
+    deffered.resolve(a1);
+
+    return deffered.promise;
+
+};
+
+
+movies.saveMovieSnipInCollection = function(searchSnippet) {
+    var deffered = Q.defer();
+    var movieJson = new movieDetailsJson();
+    movieJson.setTmdbId(searchSnippet.id);
+    mongoServices.findByTmdbId(searchSnippet.id).then(function(movieResultByTmdbId) {
+        if(_.isNull(movieResultByTmdbId) || movieResultByTmdbId===null || (movieResultByTmdbId.length === 0)) {
+            mongoServices.saveMovieInCollection(movieJson).then(function (mongoResult){
+                movieJson.setId(mongoResult.id);
+                movieJson._id = mongoResult.id;
+                deffered.resolve(movieJson);
+            });
+        } else {
+            movieJson.setId(movieResultByTmdbId._id);
+            movieJson._id = movieResultByTmdbId._id;
+            deffered.resolve(movieJson);
+        }
+    });
+    return(deffered.promise);
+};
+
+movies.processForOwnSnippets = function (searchSnippets) {
+    var searchSnippetsResult = [];
+    var deffered = Q.defer();
+
+    async.each(searchSnippets, function(searchSnippet, callback) {
+        movies.saveMovieSnipInCollection(searchSnippet).then(function(savedSearchSnip){
+            searchSnippet.tmdbId = searchSnippet.id;
+            searchSnippet.id = savedSearchSnip._id;
+            movies.mergeIn(searchSnippetsResult, searchSnippet).then(function(){
+                callback();
+            });
+        });
+    }, function(err) {
+        if( err ) {
+          console.log('ERROR : ' + err);
+        } else {
+            deffered.resolve(searchSnippetsResult);
+        }
+    });
+    return deffered.promise;
+};
+
 
 movies.searchMovie = function(req, res) {
     // get all params
@@ -84,9 +164,11 @@ movies.searchMovie = function(req, res) {
     // var primaryReleaseYear = req.query.pry;
 
     tmdbSearchServices.searchMovie(queryString, pageNo, includeAdult, region, year, null).then(function(result) {
-        res.json(result);
+        var searchSnippets = result.results;
+        movies.processForOwnSnippets(searchSnippets).then(function(finalResult) {
+            res.json(finalResult);
+        });
     });
-
 };
 
 

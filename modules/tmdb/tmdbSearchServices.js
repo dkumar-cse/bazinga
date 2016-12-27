@@ -73,30 +73,30 @@ tmdbSearchServices.searchMovie = function(searchText, pageNo, includeAdult, regi
     var deffered = Q.defer();
 
     if(validateSearchText(searchText) === false) {// searchText (Movie title to search for.) - mandatory.   Pass a text query to search. This value should be URI encoded
-	deffered.reject({message : "searchText is empty."});
+	       deffered.reject({message : "searchText is empty."});
     } else {
-	params.query = searchText; // searchText (Movie title to search for.) - mandatory.  Pass a text query to search. This value should be URI encoded
+    	params.query = searchText; // searchText (Movie title to search for.) - mandatory.  Pass a text query to search. This value should be URI encoded
 
-	if(checkEmpty(pageNo)===false) {// Page number to return - optional, default-1
-	    params.page = pageNo;
-	}
-	if(checkEmpty(includeAdult)===false) {// Choose whether to inlcude adult (pornography) content in the results - optional, default-false
-	    params.includeAdult = true;
-	}
-	if(checkEmpty(region)===false) {// Specify a ISO 3166-1 code to filter release dates - optional
-	    params.region = region;
-	}
-	if(checkEmpty(year)===false) {// Year of release. - optional, default-<empty>
-	    params.year = year;
-	}
-	if(checkEmpty(primaryReleaseYear)===false) {// Year of release. - optional, default-<empty>
-	    params.primaryReleaseYear = primaryReleaseYear;
-	}
-	params.language = 'en-US'; // optional - default-"en-US"
+    	if(checkEmpty(pageNo)===false) {// Page number to return - optional, default-1
+    	    params.page = pageNo;
+    	}
+    	if(checkEmpty(includeAdult)===false) {// Choose whether to inlcude adult (pornography) content in the results - optional, default-false
+    	    params.includeAdult = true;
+    	}
+    	if(checkEmpty(region)===false) {// Specify a ISO 3166-1 code to filter release dates - optional
+    	    params.region = region;
+    	}
+    	if(checkEmpty(year)===false) {// Year of release. - optional, default-<empty>
+    	    params.year = year;
+    	}
+    	if(checkEmpty(primaryReleaseYear)===false) {// Year of release. - optional, default-<empty>
+    	    params.primaryReleaseYear = primaryReleaseYear;
+    	}
+    	params.language = 'en-US'; // optional - default-"en-US"
 
-	this.requestApi(apiUrl, params).then(function(response) {
-	    deffered.resolve(response);
-	});
+    	this.requestApi(apiUrl, params).then(function(response) {
+    	    deffered.resolve(response);
+    	});
     }
 
     return deffered.promise;

@@ -7,6 +7,7 @@ var Q = require('q');
 
 
 
+
 var mongoServices = module.exports;
 
 // mongoServices.saveMovieInCollection = function(movieDetailsJson){
@@ -70,8 +71,8 @@ console.log("start4");
                 if (err) {
                      console.log(err);
                 } else if (result.length) {
-                     console.log('Found:', result);
-                    deffered.resolve(result);
+                    result[0].id = result[0]._id; // copy _id value into id
+                    deffered.resolve(result[0]);
 
                 } else {deffered.resolve(result);
                      console.log('No document(s) found with defined "find" criteria!');
@@ -80,14 +81,31 @@ console.log("start4");
                 db.close();
             });
         }
-
     });
-
-
-
     return deffered.promise;
 };
 
+
+mongoServices.updateMovieInCollection = function(movieDetailsJson) {
+    var deffered = Q.defer();
+
+    // Connection URL. This is where your mongodb server is running.
+    var url = 'mongodb://localhost:27017/bazinga';
+
+    // Use connect method to connect to the Server
+    MongoClient.connect(url, function (err, db) {
+        if (err) {
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+        } else {
+            console.log('Connection established to', url);
+            var collectionName = "movies";
+            db.collection(collectionName).update({_id:movieDetailsJson._id}, movieDetailsJson, {upsert:true});
+            deffered.resolve({msg : "updates", result : movieDetailsJson });
+        }
+    });
+
+    return deffered.promise;
+};
 
 mongoServices.saveMovieInCollection = function(movieDetailsJson){
     var deffered = Q.defer();
@@ -110,7 +128,7 @@ mongoServices.saveMovieInCollection = function(movieDetailsJson){
                  movieDetailsJson._id = autoIndex;
                  collection.insert(movieDetailsJson);
 
-                 deffered.resolve({res : "inserted"});
+                 deffered.resolve({res : "inserted", id:autoIndex});
              });
          }
      });
@@ -118,6 +136,39 @@ mongoServices.saveMovieInCollection = function(movieDetailsJson){
 
 
      return deffered.promise;
+};
+
+
+mongoServices.findByTmdbId = function(tmdbId) {
+    var deffered = Q.defer();
+    // Connection URL. This is where your mongodb server is running.
+    var url = 'mongodb://localhost:27017/bazinga';
+
+    // Use connect method to connect to the Server
+    MongoClient.connect(url, function (err, db) {
+        if (err) {
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+        } else {
+            //HURRAY!! We are connected. :)
+             console.log('Connection established to', url);
+
+            // do some work here with the database.
+            db.collection('movies').find({ tmdbId:parseInt(tmdbId) }).toArray(function ( err, result) {
+                if (err) {
+                     console.log(err);
+                } else if (result.length) {
+                    result[0].id = result[0]._id; // copy _id value into id
+                    deffered.resolve(result[0]);
+
+                } else {deffered.resolve(result);
+                     console.log('No document(s) found with defined "find" criteria!');
+                }
+                //Close connection
+                db.close();
+            });
+        }
+    });
+    return deffered.promise;
 };
 
 
