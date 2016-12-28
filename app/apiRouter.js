@@ -12,6 +12,10 @@ var router = express.Router();
 
 var movies = require('../services/movies');
 
+router.get('/movie/casts', function(req, res) {
+    movies.getMovieCasts(req, res);
+});
+
 router.get('/movie', function(req, res) {
     movies.getMovieByID(req, res);
 });

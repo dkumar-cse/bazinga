@@ -22,6 +22,11 @@ define(['angularAMD', 'ngRoute', 'ngMaterial', 'ngAnimate', 'ngAria', 'ngResourc
                 controller: 'moviepageController',
                 controllerUrl: 'moviepage'
             })).
+            when('/movies/search/:query', angularAMD.route({
+                templateUrl: 'app/sections/movie/templates/searchpage.template.html',
+                controller: 'searchpageController',
+                controllerUrl: 'searchpage'
+            })).
             otherwise('/movies');
     }]);
     console.log("start bootstraping....");

@@ -228,5 +228,30 @@ movies.searchMovie = function(req, res) {
 //     });
 // }
 
+movies.getTmdbMovieIdFromMovieId = function (movieId) {
+    var deffered = Q.defer();
+    mongoServices.getMovieFromCollection(movieId).then(function (movieJson) {
+        var tmdbId = movieJson.tmdbId;
+        deffered.resolve(tmdbId);
+    });
+    return deffered.promise;
+};
+
+movies.getMovieCasts = function(req, res) {
+    var movieId = req.query.id;
+    mongoServices.getMovieCasts(movieId).then(function(result) {
+        if(result.length === 0) {
+            movies.getTmdbMovieIdFromMovieId(movieId).then(function(tmdbId) {
+                tmdbMngr.getMovieCasts(tmdbId).then(function(casts){
+                    mongoServices.saveTmdbMovieCasts(movieId, casts).then(function(castsResult) {
+                        res.json(castsResult);
+                    });
+                });
+            });
+        } else {
+            res.json(result[0]);
+        }
+    });
+};
 
 module.exports = movies;
