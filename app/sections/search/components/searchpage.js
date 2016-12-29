@@ -9,7 +9,6 @@ define(['boost', 'q'], function (app, Q) {
         var MovieService = $resource('/api/search', {id:movieId, q:queryString});
 
         var searchResult = MovieService.get({q:queryString}, function(response) {
-
             $scope.movie_search_snips = response.result;
         });
 

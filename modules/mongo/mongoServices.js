@@ -178,9 +178,10 @@ mongoServices.findByTmdbId = function(tmdbId) {
 };
 
 
-mongoServices.saveTmdbMovieCasts = function (movieId, movieCastsJson) {
+mongoServices.saveTmdbMovieCasts = function (movieId, movieCastsJson) {console.log("dddd");
     var deffered = Q.defer();
     var movieCastsResult = [];
+    var movieCrewResult = [];
 
         // Connection URL. This is where your mongodb server is running.
         var url = 'mongodb://localhost:27017/bazinga';
@@ -193,27 +194,44 @@ mongoServices.saveTmdbMovieCasts = function (movieId, movieCastsJson) {
                 console.log('Connection established to', url);
                 var fieldName = "casts_id";
                 var personCollection = "persons";
-                var castsCollection = "casts";
-                async.each(movieCastsJson.cast, function(person, callback){
+                var castsCollection = "casts";console.log("cccc");
+                var casts = movieCastsJson.cast;
+                var castsAndCrews = casts.concat(movieCastsJson.crew);
+                async.each(castsAndCrews, function(person, callback){
                     db.collection(personCollection).find({tmdbId:person.id}).toArray(function(err, result) {
                         if(result.length === 0) {
-                            autoIncrement.getNextSequence(db, personCollection, fieldName, function (err, autoIndex) {console.log("2");
-                                 person._id = autoIndex;
-                                 person.tmdbId = person.id;
-                                 person.id = person._id;
-                                 console.log(autoIndex);
-                                 db.collection(personCollection).insert(person).then(function(result) {
-                                     mongoServices.mergeIn(movieCastsResult, person).then(function(movieCastsJsonResult){
-                                         callback();
-                                     });
-                                 });
-                                //  db.collection(personCollection).update({tmdbId:parseInt(person.tmdbId)}, person, {upsert:true}).then(function(result) {
-                                //
-                                //  });
+                            autoIncrement.getNextSequence(db, personCollection, fieldName, function (err, autoIndex) {
+                                person._id = autoIndex;
+                                person.tmdbId = person.id;
+                                person.id = person._id;
+
+                                db.collection(personCollection).insert(person).then(function(result) {
+                                    if(person.cast_id && person.character) {
+                                        // this person is a cast
+                                        mongoServices.mergeIn(movieCastsResult, person).then(function(movieCastsJsonResult){
+                                            callback();
+                                        });
+                                    }else if(person.job) {
+                                        // this person is a crew member
+                                        mongoServices.mergeIn(movieCrewResult, person).then(function(movieCastsJsonResult){
+                                            callback();
+                                        });
+                                    }
+                                });
                             });
                         } else {
-                            mongoServices.mergeIn(movieCastsResult, result[0]).then(function(movieCastsJsonResult){
-                                callback();
+                            db.collection(personCollection).update({tmdbId:parseInt(person.tmdbId)}, person, {upsert:true}).then(function(result) {
+                                if(person.cast_id && person.character) {
+                                    // this person is a cast
+                                    mongoServices.mergeIn(movieCastsResult, person).then(function(movieCastsJsonResult){
+                                        callback();
+                                    });
+                                }else {
+                                    // this person is a crew member
+                                    mongoServices.mergeIn(movieCrewResult, person).then(function(movieCastsJsonResult){
+                                        callback();
+                                    });
+                                }
                             });
                         }
                     });
@@ -225,6 +243,7 @@ mongoServices.saveTmdbMovieCasts = function (movieId, movieCastsJson) {
                         var movieCastsJsonResult = {};
                         movieCastsJsonResult.movie_id = parseInt(movieId);
                         movieCastsJsonResult.casts = movieCastsResult;
+                        movieCastsJsonResult.crew = movieCrewResult;
                         movieCastsJsonResult.tmdbId = parseInt(movieCastsJson.id);
 
                         db.collection(castsCollection).update({movie_id:parseInt(movieId)}, movieCastsJsonResult, {upsert:true});

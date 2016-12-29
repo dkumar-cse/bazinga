@@ -241,6 +241,23 @@ movies.getTmdbMovieIdFromMovieId = function (movieId) {
     return deffered.promise;
 };
 
+var manipulateEachCast = function(casts) {
+    for(var i=0;i<casts.length;i++) {
+        if(!_.isNull(casts[i].profile_path) && casts[i].profile_path!==null){
+            casts[i].profile_path = tmdbMngr.generateImageUrl(casts[i].profile_path);
+        }
+    }
+    return casts;
+};
+var manipulateEachCrew = function(crew) {
+    for(var i=0;i<crew.length;i++) {
+        if(!_.isNull(crew[i].profile_path) && crew[i].profile_path!==null){
+            crew[i].profile_path = tmdbMngr.generateImageUrl(crew[i].profile_path);
+        }
+    }
+    return crew;
+};
+
 movies.getMovieCasts = function(req, res) {
     var movieId = req.query.id;
     mongoServices.getMovieCasts(movieId).then(function(result) {
@@ -248,12 +265,17 @@ movies.getMovieCasts = function(req, res) {
             movies.getTmdbMovieIdFromMovieId(movieId).then(function(tmdbId) {
                 tmdbMngr.getMovieCasts(tmdbId).then(function(casts){
                     mongoServices.saveTmdbMovieCasts(movieId, casts).then(function(castsResult) {
+                        castsResult.casts = manipulateEachCast(castsResult.casts);
+                        castsResult.crew = manipulateEachCrew(castsResult.crew);
                         res.json(castsResult);
                     });
                 });
             });
         } else {
-            res.json(result[0]);
+            var castsResult = result[0];
+            castsResult.casts = manipulateEachCast(castsResult.casts);
+            castsResult.crew = manipulateEachCrew(castsResult.crew);
+            res.json(castsResult);
         }
     });
 };

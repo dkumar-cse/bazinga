@@ -19,7 +19,7 @@ define(['boost', 'q'], function (app, Q) {
         var queryString = $routeParams.q;
 
         var MovieService = $resource('/api/movie', {id:movieId, q:queryString});
-        var Movie = MovieService.get({id:movieId}, function(response) {
+        MovieService.get({id:movieId}, function(response) {
 
             //  Render Movie Content  -  START
 
@@ -38,6 +38,22 @@ define(['boost', 'q'], function (app, Q) {
             $scope.releaseYear = result.year;
             $scope.title = result.title;
             $scope.backdrop_pic = result.backdropPic;
+
+            //  Render Movie Content  -  END
+
+
+        });
+
+        var MovieCastsService = $resource('/api/movie/casts', {id:movieId});
+        MovieCastsService.get({id:movieId}, function(response) {
+
+            //  Render Movie Content  -  START
+
+            var result = response;
+
+            $scope.casts = result.casts;
+            $scope.directors = result.crew;
+
 
             //  Render Movie Content  -  END
 
