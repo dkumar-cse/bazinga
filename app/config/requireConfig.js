@@ -37,6 +37,7 @@ require.config({
         request :   'node_modules/request/request',
         rp :   'node_modules/request-promise/lib/rp',
         domReady : 'node_modules/requirejs-domready/domReady',
+        mdc : 'node_modules/material-components-web/dist/material-components-web',
 
 
         //  Resources
@@ -51,6 +52,9 @@ require.config({
 
         // HeaderCtrl
         header    :   'app/sections/header/components/header',
+
+        // Search
+        searchpage    :   'app/sections/search/components/searchpage',
 
     },
 
@@ -67,6 +71,14 @@ require.config({
                 'header'
             ],
             exports: 'homepage'
+        },
+        searchpage : {
+            deps: [
+                'angular',
+                'ngRoute',
+                'header'
+            ],
+            exports: 'searchpage'
         },
         header : {
             deps: [

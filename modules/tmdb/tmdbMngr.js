@@ -45,7 +45,10 @@ tmdbMngr.tmdbTokenIdToTokenId = function (tmdbTokenId) {
 };
 
 tmdbMngr.generateImageUrl = function (path) {
-    var imageUrl = "http:\/\/image.tmdb.org/t/p/original" + path;
+    var imageUrl = null;
+    if(path!==null && path!=undefined){
+        imageUrl = "http:\/\/image.tmdb.org/t/p/original" + path;
+    }
     return imageUrl;
 };
 

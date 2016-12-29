@@ -45,7 +45,6 @@ movies.checkForHalfResult = function(movieJson) {
 
 movies.getMovieByID = function(req, res) {
     var movieId = req.query.id;
-
     // tmdbMngr.getMovieCasts(id).then(function(response){
     //     res.json(response);
     // });
@@ -60,12 +59,12 @@ movies.getMovieByID = function(req, res) {
                     response.id = result._id;
                     response._id = result._id;
                     mongoServices.updateMovieInCollection(response).then(function(result){
-                        res.json(result.result);
+                        res.json(result);
                     });
                 });
             });
         } else {
-            res.json(result);
+            res.json({res:"got from DB", result: result });
         }
     });
     // tmdbMovieServices.getMoviesCasts(id).then(function(result) {
@@ -139,6 +138,8 @@ movies.processForOwnSnippets = function (searchSnippets) {
         movies.saveMovieSnipInCollection(searchSnippet).then(function(savedSearchSnip){
             searchSnippet.tmdbId = searchSnippet.id;
             searchSnippet.id = savedSearchSnip._id;
+            searchSnippet.poster_path = tmdbMngr.generateImageUrl(searchSnippet.poster_path);
+            searchSnippet.backdrop_path = tmdbMngr.generateImageUrl(searchSnippet.backdrop_path);
             movies.mergeIn(searchSnippetsResult, searchSnippet).then(function(){
                 callback();
             });
@@ -166,7 +167,10 @@ movies.searchMovie = function(req, res) {
     tmdbSearchServices.searchMovie(queryString, pageNo, includeAdult, region, year, null).then(function(result) {
         var searchSnippets = result.results;
         movies.processForOwnSnippets(searchSnippets).then(function(finalResult) {
-            res.json(finalResult);
+            res.json({
+                res : "succeded",
+                result : finalResult
+            });
         });
     });
 };

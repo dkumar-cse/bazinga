@@ -1,0 +1,99 @@
+
+/*  prepend "srch" in all css property  */
+
+img.srch_image_shape {
+    /*@include mdc-elevation(8);*/
+    width: 80px;
+    height: 100px;
+    padding: 5px;
+    float: left;
+
+}
+
+.srch_list_element {
+    width: 100%;
+    margin-bottom: 5px;
+    background-color: blue;
+    display: inline-block;
+}
+.srch_top {
+    width: 900px;
+    height: auto;
+    margin: auto;
+    align-content: center;
+    background-color: red;
+    padding: 5px;
+}
+.srch_vote_average {
+    width: 60px;
+    height: 30px;
+    background-color: red;
+    float: right;
+    padding: 10px;
+    align-content: center;
+}
+
+.srch_vote_average_content {
+    font-weight: bold;
+    text-align: center;
+}
+
+.srch_adult_check {
+    float: right;
+    background: rgba(0,0,0,0.87);
+    color: yellow;
+    margin-right: 28px;
+    margin-top: 5px;
+}
+
+.srch_list_right {
+    width: 60px;
+    float: right;
+}
+
+.srch_list_left {
+    width: 500px;
+    height: 110px;
+    float: left;
+    background-color: aquamarine;
+}
+
+.srch_movie_title_box {
+    width: 80%;
+    /* min-height: 50px; */
+    background-color: #bda8a8;
+    float: left;
+    margin: 5px;
+    padding-bottom: 3px;
+}
+
+.srch_movie_title {
+    font-family: 'Open Sans', sans-serif;
+    margin-top: 3px;
+    margin-left: 10px;
+    font-size: large;
+    float: left;
+}
+
+.srch_movie_overview_box {
+    width: 80%;
+    background-color: #bda8a8;
+    float: left;
+    margin: 5px;
+    padding-bottom: 3px;
+}
+
+.srch_movie_overview {
+    font-size: smaller;
+    padding-left: 10px;
+    line-height: 18px;
+}
+
+.srch_movie_year {
+    width: 50px;
+    float: left;
+    font-size: small;
+    margin-left: 5px;
+    margin-top: 10px;
+
+}

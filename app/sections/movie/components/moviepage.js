@@ -23,19 +23,21 @@ define(['boost', 'q'], function (app, Q) {
 
             //  Render Movie Content  -  START
 
-            $scope.overview = response.overview;
-            $scope.plot = response.plot;
-            $scope.directors = response.directors;
-            $scope.writers = response.writers;
-            $scope.casts = response.casts;
-            $scope.awardInfo = response.awardInfo;
-            $scope.duration = response.duration;
-            $scope.release_date = response.releaseDate;
-            $scope.release_year = response.year;
-            $scope.poster_pics_url = response.posterPics;
-            $scope.releaseYear = response.year;
-            $scope.title = response.title;
-            $scope.backdrop_pic = response.backdropPic;
+            var result = response.result;
+
+            $scope.overview = result.overview;
+            $scope.plot = result.plot;
+            $scope.directors = result.directors;
+            $scope.writers = result.writers;
+            $scope.casts = result.casts;
+            $scope.awardInfo = result.awardInfo;
+            $scope.duration = result.duration;
+            $scope.release_date = result.releaseDate;
+            $scope.release_year = result.year;
+            $scope.poster_pics_url = result.posterPics;
+            $scope.releaseYear = result.year;
+            $scope.title = result.title;
+            $scope.backdrop_pic = result.backdropPic;
 
             //  Render Movie Content  -  END
 

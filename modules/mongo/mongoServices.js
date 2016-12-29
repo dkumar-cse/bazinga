@@ -110,7 +110,7 @@ mongoServices.updateMovieInCollection = function(movieDetailsJson) {
             console.log('Connection established to', url);
             var collectionName = "movies";
             db.collection(collectionName).update({_id:movieDetailsJson._id}, movieDetailsJson, {upsert:true});
-            deffered.resolve({msg : "updates", result : movieDetailsJson });
+            deffered.resolve({msg : "updated", result : movieDetailsJson });
         }
     });
 

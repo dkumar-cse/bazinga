@@ -23,7 +23,7 @@ define(['angularAMD', 'ngRoute', 'ngMaterial', 'ngAnimate', 'ngAria', 'ngResourc
                 controllerUrl: 'moviepage'
             })).
             when('/movies/search/:query', angularAMD.route({
-                templateUrl: 'app/sections/movie/templates/searchpage.template.html',
+                templateUrl: 'app/sections/search/templates/searchpage.template.html',
                 controller: 'searchpageController',
                 controllerUrl: 'searchpage'
             })).

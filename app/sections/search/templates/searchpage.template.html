@@ -1,0 +1,34 @@
+<script src="../node_modules/material-components-web/dist/material-components-web.js"></script>
+<script>mdc.autoInit()</script>
+<div class="srch_top">
+    <div  ng-repeat="snip in movie_search_snips" ng-click="null">
+        <div class="srch_list_element">
+            <a href="#!/movies/{{snip.id}}">
+                <div class="srch_list_left">
+                    <img class="srch_image_shape" src="{{snip.poster_path}}"></img>
+                    <div class="srch_movie_title_box">
+                        <div class="srch_movie_title">
+                            {{snip.title}}
+                        </div>
+                        <div class="srch_movie_year">
+                            ({{snip.release_date.substring(0, 4);}})
+                        </div>
+                    </div>
+                    <div class="srch_movie_overview_box">
+                        <div class="srch_movie_overview">
+                            {{snip.overview.substring(0, 100);}}.......Read More
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <div class="srch_list_right">
+                <div class="srch_vote_average">
+                    <div class="srch_vote_average_content">{{snip.vote_average}}</div>
+                </div>
+                <div class="srch_adult_check" ng-if="true === snip.adult">
+                    <i class="material-icons">text_format</i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
