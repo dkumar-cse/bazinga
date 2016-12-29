@@ -1,8 +1,9 @@
+<div ng-controller="HeaderController" ng-cloak >
 <div id="top_header">
     <div id="primary_nav" class="inset_left2 inset_right2">
         <div class="primary_nav_row">
     <div class="headerIcon">
-<div ng-controller="HeaderController" ng-cloak >
+<div>
   <div class="glyph" layout="row">
     <div flex layout-align="center center" style="text-align: center;" layout="column">
       <div flex></div>
@@ -13,7 +14,7 @@
             aria-label="{{ font.name + size.size }}"
             class="step "></md-icon>
       </div>
-      
+
     </div>
   </div>
 
@@ -41,14 +42,19 @@
 
 </div>
 
+<!--  SEARCH BOX -->
+<div class="srch_box">
+    <div class="srch_field_box" >
+        <input class="search_input_field" type="text" ng-model="search_text" placeholder="Search Movies..."/>
+    </div>
+    <button class="srch_button mdc-button mdc-button--dense" ng-click="searchText()">
+        SEARCH
+    </button>
+</div>
+
 <div id="primary_menu_wrapper">
 
-<md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
-      <md-nav-item md-nav-click="goto('page1')" name="page1">Page One</md-nav-item>
-      <md-nav-item md-nav-click="goto('page2')" name="page2">Page Two</md-nav-item>
-      <md-nav-item md-nav-click="goto('page3')" name="page3">Page Three</md-nav-item>
-
-</md-nav-bar>
+</div>
 </div>
 </div>
 </div>

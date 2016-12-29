@@ -97,3 +97,15 @@ img.srch_image_shape {
     margin-top: 10px;
 
 }
+.srch_box {
+    margin-left: 100px;
+    margin-top: 22px;
+}
+
+
+.search_input_field {
+    width: 400px;
+    height: 25px;
+    float: left;
+    padding-left: 10px;
+}

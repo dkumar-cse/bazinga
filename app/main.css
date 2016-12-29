@@ -142,6 +142,7 @@
     width: 100%;
     font-size: .9rem;
     background-color: transparent;
+    position: relative;
 }
 #primary_nav {
     display: table;
@@ -163,13 +164,17 @@
 }
 
 #primary_menu_wrapper {
-    width: 48%;
+    width: 30%;
     padding-right: 1%;
     display: table-cell;
-    vertical-align: middle;
     color: #FFF;
     position: relative;
     font-weight: bold;
+}
+
+.header_primary_menu {
+    background-color: black;
+    color: white;
 }
 .movie_body_header {
     margin-top: -109px;
@@ -292,4 +297,13 @@
 }
 .movie_items_box {
     padding-top: 30px;
+}
+
+.header_nav_item {
+    background-color: black;
+    color: white;
+}
+.header_nav_item.button {
+    background-color: black;
+    color: white;
 }
