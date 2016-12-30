@@ -148,14 +148,28 @@ movies.searchMovie = function(req, res) {
     var year = req.query.yr;
     // var primaryReleaseYear = req.query.pry;
 
-    tmdbSearchServices.searchMovie(queryString, pageNo, includeAdult, region, year, null).then(function(result) {
-        var searchSnippets = result.results;
-        movies.processForOwnSnippets(searchSnippets).then(function(finalResult) {
-            res.json({
-                res : "succeded",
-                result : finalResult
+    var cacheKey = "seearch_" + queryString;
+
+    cacheManager.get(cacheKey).then(function (cacheGetResult) {
+        if(cacheGetResult === null) {
+            tmdbSearchServices.searchMovie(queryString, pageNo, includeAdult, region, year, null).then(function(result) {
+                var searchSnippets = result.results;
+                movies.processForOwnSnippets(searchSnippets).then(function(finalResult) {
+                    cacheManager.set(cacheKey, JSON.stringify(finalResult)).then(function(cacheSetResult) {
+                        res.json({
+                            res : "succeded - got from TMDB",
+                            result : finalResult
+                        });
+                    });
+
+                });
             });
-        });
+        } else {
+            res.json({
+                res : "succeded - got from CACHE",
+                result : JSON.parse(cacheGetResult)
+            });
+        }
     });
 };
 
