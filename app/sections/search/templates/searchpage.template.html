@@ -1,7 +1,7 @@
-<script src="../node_modules/material-components-web/dist/material-components-web.js"></script>
-<script>mdc.autoInit()</script>
+<!-- <script src="../node_modules/material-components-web/dist/material-components-web.js"></script>
+<script>mdc.autoInit()</script> -->
 <div class="srch_top">
-    <div  ng-repeat="snip in movie_search_snips" ng-click="null">
+    <div  ng-repeat="snip in movie_search_snips" ng-click="null" class="mdc-elevation--z2" ng-if="false == result_empty">
         <div class="srch_list_element">
             <a href="#!/movies/{{snip.id}}">
                 <div class="srch_list_left">
@@ -31,4 +31,9 @@
             </div>
         </div>
     </div>
+
+    <div ng-if="true == result_empty">
+        no result found.
+    </div>
+
 </div>

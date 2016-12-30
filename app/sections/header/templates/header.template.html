@@ -42,14 +42,16 @@
 
 </div>
 
-<!--  SEARCH BOX -->
-<div class="srch_box">
-    <div class="srch_field_box" >
-        <input class="search_input_field" type="text" ng-model="search_text" placeholder="Search Movies..."/>
+<div class="header_search">
+    <!--  SEARCH BOX -->
+    <div class="search_box">
+        <div class="search_field_box" >
+            <input class="search_input_field" type="text" ng-keyup="$event.keyCode == 13 ? searchText() : null" ng-model="search_text" placeholder="Search Movies..."/>
+        </div>
+        <button class="search_button mdc-button mdc-button--raised mdc-button--accent" ng-click="searchText()">
+            SEARCH
+        </button>
     </div>
-    <button class="srch_button mdc-button mdc-button--dense" ng-click="searchText()">
-        SEARCH
-    </button>
 </div>
 
 <div id="primary_menu_wrapper">

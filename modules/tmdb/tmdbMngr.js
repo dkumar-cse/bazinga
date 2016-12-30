@@ -48,6 +48,8 @@ tmdbMngr.generateImageUrl = function (path) {
     var imageUrl = null;
     if(path!==null && path!=undefined){
         imageUrl = "http:\/\/image.tmdb.org/t/p/original" + path;
+    }else{
+        imageUrl = "https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png";
     }
     return imageUrl;
 };

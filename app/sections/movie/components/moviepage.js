@@ -9,9 +9,9 @@
 // })
 
 
-define(['boost', 'q'], function (app, Q) {
+define(['boost', 'q'], function (app, Q, mdc) {
 
-
+    // mdc.autoInit();
 
     app.controller('moviepageController',['$scope', '$routeParams', '$resource', function ($scope, $routeParams, $resource) {
 

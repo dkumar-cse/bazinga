@@ -15,7 +15,7 @@ var mongoServices = require('../modules/mongo/mongoServices');
 var tmdbMngr = require('../modules/tmdb/tmdbMngr');
 var omdbMngr = require('../modules/omdb/omdbMngr');
 var movieDetailsJson = require('../resources/movieDetailsJson');
-var redis = require('redis');
+var cacheManager = require('../modules/cache/cacheManager');
 var async = require('async');
 
 var movieGoogler = require('../modules/googleSearch/movieGoogler');
@@ -45,58 +45,42 @@ movies.checkForHalfResult = function(movieJson) {
 
 movies.getMovieByID = function(req, res) {
     var movieId = req.query.id;
-    // tmdbMngr.getMovieCasts(id).then(function(response){
-    //     res.json(response);
-    // });
+    var cacheKey = "movieIfd_" + movieId;
 
-    mongoServices.getMovieFromCollection(movieId).then(function (result) {
-        if(movies.checkForHalfResult(result)===true) {
-            var tmdbId = result.tmdbId;
-            tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {
-                var imdbId = tmdbResponse.imdbId;
-                omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
-                    var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
-                    response.id = result._id;
-                    response._id = result._id;
-                    mongoServices.updateMovieInCollection(response).then(function(result){
-                        res.json(result);
+    cacheManager.get(cacheKey).then(function(cacheResult){
+        console.log((cacheResult));
+        if(cacheResult  === null) {console.log("here");
+            mongoServices.getMovieFromCollection(movieId).then(function (result) {
+                if(movies.checkForHalfResult(result)===true) {
+                    var tmdbId = result.tmdbId;
+                    tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {
+                        // var imdbId = tmdbResponse.imdbId;
+                        // omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+                        //     var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
+                        //     response.id = result._id;
+                        //     response._id = result._id;
+                        //     mongoServices.updateMovieInCollection(response).then(function(result){
+                        //         res.json(result);
+                        //     });
+                        // });
+                        var response = tmdbResponse;
+                        response.id = result._id;
+                        response._id = result._id;
+                        mongoServices.updateMovieInCollection(response).then(function(result){
+                            res.json(result);
+                        });
                     });
-                });
+                } else {
+                    cacheManager.set(cacheKey, JSON.stringify(result)).then(function(cacheSetResult) {console.log(cacheSetResult);
+                        res.json({res:"got from DB", result: result });
+                    });
+                }
             });
-        } else {
-            res.json({res:"got from DB", result: result });
+        } else {console.log("there");
+            console.log((cacheResult));
+            res.json({res:"got from CACHE", result: JSON.parse(cacheResult) });
         }
     });
-    // tmdbMovieServices.getMoviesCasts(id).then(function(result) {
-    //     res.json(result);
-    // });
-
-    // tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
-    //     var imdbId = tmdbResponse.imdbId;
-    //     omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
-    //         var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
-    //         mongoServices.saveMovieInCollection(response).then(function(result){
-    //             res.json(response);
-    //         });
-    //     });
-    // });
-
-
-    // mongoServices.getMovieFromCollection(id).then(function(result){
-    //     res.json(result);
-    // });
-
-
-    // tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
-    //     var imdbId = tmdbResponse.imdbId;
-    //     omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
-    //
-    //         var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
-    //         res.json(response);
-    //     });
-    //
-    // });
-
 
 };
 
@@ -184,16 +168,6 @@ movies.searchMovie = function(req, res) {
 //     console.log(response);
 // });
 
-// client = redis.createClient();
-// client.get('asd', function(err, reply) {
-//     console.log(reply);
-// });
-//
-// client.set('asd', 'xxxx');
-//
-// client.get('asd', function(err, reply) {
-//     console.log(reply);
-// });
 
 
 
@@ -245,6 +219,8 @@ var manipulateEachCast = function(casts) {
     for(var i=0;i<casts.length;i++) {
         if(!_.isNull(casts[i].profile_path) && casts[i].profile_path!==null){
             casts[i].profile_path = tmdbMngr.generateImageUrl(casts[i].profile_path);
+        }else{
+            casts[i].profile_path = "https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png";
         }
     }
     return casts;
@@ -253,6 +229,8 @@ var manipulateEachCrew = function(crew) {
     for(var i=0;i<crew.length;i++) {
         if(!_.isNull(crew[i].profile_path) && crew[i].profile_path!==null){
             crew[i].profile_path = tmdbMngr.generateImageUrl(crew[i].profile_path);
+        }else{
+            crew[i].profile_path = "https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png";
         }
     }
     return crew;
@@ -281,3 +259,35 @@ movies.getMovieCasts = function(req, res) {
 };
 
 module.exports = movies;
+
+
+
+// tmdbMovieServices.getMoviesCasts(id).then(function(result) {
+//     res.json(result);
+// });
+
+// tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
+//     var imdbId = tmdbResponse.imdbId;
+//     omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+//         var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
+//         mongoServices.saveMovieInCollection(response).then(function(result){
+//             res.json(response);
+//         });
+//     });
+// });
+
+
+// mongoServices.getMovieFromCollection(id).then(function(result){
+//     res.json(result);
+// });
+
+
+// tmdbMngr.getMovieDetails(id).then(function(tmdbResponse) {
+//     var imdbId = tmdbResponse.imdbId;
+//     omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+//
+//         var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
+//         res.json(response);
+//     });
+//
+// });

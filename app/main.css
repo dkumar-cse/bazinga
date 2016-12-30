@@ -2,6 +2,9 @@
 @import url("../app/sections/search/css/search_css.css");
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Slabo+27px');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+
+
 
 @font-face {
   font-family: 'Material Icons';
@@ -164,7 +167,7 @@
 }
 
 #primary_menu_wrapper {
-    width: 30%;
+    width: auto;
     padding-right: 1%;
     display: table-cell;
     color: #FFF;
@@ -178,6 +181,7 @@
 }
 .movie_body_header {
     margin-top: -109px;
+    min-height: 600px;
 }
 .movie_body_header_row {
     /*display: inline-flex;
@@ -306,4 +310,25 @@
 .header_nav_item.button {
     background-color: black;
     color: white;
+}
+
+.search_box {
+    margin: auto;
+    display: table;
+    margin-top: 27px;
+}
+
+.search_input_field {
+    width: 400px;
+    height: 30px;
+    float: left;
+    padding-left: 10px;
+}
+
+.search_field_box {
+    float: left;
+}
+
+.header_search {
+    align-content: center;
 }

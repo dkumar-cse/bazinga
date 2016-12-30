@@ -85,7 +85,7 @@ console.log("start4");
                     deffered.resolve(result[0]);
 
                 } else {deffered.resolve(result);
-                     console.log('No document(s) found with defined "find" criteria!');
+                     console.log('No document(s) found with defined "find" criteria in "mongoServices.getMovieFromCollection  " + { _id:'+ parseInt(movieId) +'}');
                 }
                 //Close connection
                 db.close();
@@ -167,7 +167,7 @@ mongoServices.findByTmdbId = function(tmdbId) {
                     deffered.resolve(result[0]);
 
                 } else {deffered.resolve(result);
-                     console.log('No document(s) found with defined "find" criteria!');
+                     console.log('No document(s) found with defined "find" criteria in "mongoServices.findByTmdbId"  + { tmdbId:'+ parseInt(tmdbId)+'}');
                 }
                 //Close connection
                 db.close();
@@ -206,12 +206,12 @@ mongoServices.saveTmdbMovieCasts = function (movieId, movieCastsJson) {console.l
                                 person.id = person._id;
 
                                 db.collection(personCollection).insert(person).then(function(result) {
-                                    if(person.cast_id && person.character) {
+                                    if(person.hasOwnProperty("cast_id") && person.hasOwnProperty("character")) {
                                         // this person is a cast
                                         mongoServices.mergeIn(movieCastsResult, person).then(function(movieCastsJsonResult){
                                             callback();
                                         });
-                                    }else if(person.job) {
+                                    }else if(person.hasOwnProperty("job")) {
                                         // this person is a crew member
                                         mongoServices.mergeIn(movieCrewResult, person).then(function(movieCastsJsonResult){
                                             callback();
@@ -221,12 +221,12 @@ mongoServices.saveTmdbMovieCasts = function (movieId, movieCastsJson) {console.l
                             });
                         } else {
                             db.collection(personCollection).update({tmdbId:parseInt(person.tmdbId)}, person, {upsert:true}).then(function(result) {
-                                if(person.cast_id && person.character) {
+                                if(person.hasOwnProperty("cast_id") && person.hasOwnProperty("character")) {
                                     // this person is a cast
                                     mongoServices.mergeIn(movieCastsResult, person).then(function(movieCastsJsonResult){
                                         callback();
                                     });
-                                }else {
+                                }else if(person.hasOwnProperty("job")){
                                     // this person is a crew member
                                     mongoServices.mergeIn(movieCrewResult, person).then(function(movieCastsJsonResult){
                                         callback();

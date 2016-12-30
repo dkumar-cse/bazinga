@@ -5,6 +5,9 @@ require.config({
     paths: {
         boost   : 'app/boost',
 
+        //  CACHE MANAGER
+        cacheManager  :   'modules/cache/cacheManager',
+
         // GOOGLE
         movieGoogler    :   'modules/googleSearch/movieGoogler',
 
@@ -56,6 +59,9 @@ require.config({
         // Search
         searchpage    :   'app/sections/search/components/searchpage',
 
+        // Search
+        materialdemo    :   'app/sections/materialdemo/components/materialdemo',
+
     },
 
     shim: {
@@ -87,6 +93,13 @@ require.config({
             ],
             exports: 'header'
         },
+        materialdemo : {
+            deps: [
+                'angular',
+                'ngRoute',
+            ],
+            exports: 'materialdemo'
+        },
 
         ngMaterial : {
             deps: [
@@ -112,6 +125,12 @@ require.config({
                 'angular'
             ],
             exports: 'homepage'
+        },
+        mdc : {
+            deps: [
+                'angular'
+            ],
+            exports: 'mdc'
         }
     },
 

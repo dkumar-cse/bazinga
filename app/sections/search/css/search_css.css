@@ -13,7 +13,6 @@ img.srch_image_shape {
 .srch_list_element {
     width: 100%;
     margin-bottom: 5px;
-    background-color: blue;
     display: inline-block;
 }
 .srch_top {
@@ -21,13 +20,11 @@ img.srch_image_shape {
     height: auto;
     margin: auto;
     align-content: center;
-    background-color: red;
     padding: 5px;
 }
 .srch_vote_average {
     width: 60px;
     height: 30px;
-    background-color: red;
     float: right;
     padding: 10px;
     align-content: center;
@@ -55,16 +52,15 @@ img.srch_image_shape {
     width: 500px;
     height: 110px;
     float: left;
-    background-color: aquamarine;
+
 }
 
 .srch_movie_title_box {
     width: 80%;
-    /* min-height: 50px; */
-    background-color: #bda8a8;
     float: left;
     margin: 5px;
     padding-bottom: 3px;
+    color: black;
 }
 
 .srch_movie_title {
@@ -77,7 +73,6 @@ img.srch_image_shape {
 
 .srch_movie_overview_box {
     width: 80%;
-    background-color: #bda8a8;
     float: left;
     margin: 5px;
     padding-bottom: 3px;
@@ -87,6 +82,7 @@ img.srch_image_shape {
     font-size: smaller;
     padding-left: 10px;
     line-height: 18px;
+    color: black;
 }
 
 .srch_movie_year {
@@ -96,16 +92,4 @@ img.srch_image_shape {
     margin-left: 5px;
     margin-top: 10px;
 
-}
-.srch_box {
-    margin-left: 100px;
-    margin-top: 22px;
-}
-
-
-.search_input_field {
-    width: 400px;
-    height: 25px;
-    float: left;
-    padding-left: 10px;
 }
