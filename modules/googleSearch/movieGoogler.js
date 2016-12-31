@@ -11,8 +11,9 @@ var request = require('request');
 var _ = require('lodash');
 var Q = require('q');
 var async = require('async');
-var itemHomes = require('../../resources/itemHomes');
+var ItemHomes = require('../../resources/itemHomes');
 var toiProcessor = require('./toiProcessor');
+var imdbProcessor = require('./imdbProcessor');
 var common = require('../../modules/utils/common');
 
 var google = require('googleapis');
@@ -32,26 +33,26 @@ var movieGoogler = module.exports;
 
 movieGoogler.getItemHomeName = function(item) {
     var deffered = Q.defer();
-    var item_homes = {
-        name : "TimesOfIndia",
-        keyword : "timesofindia"
-    };//new itemHomes();
     var item_home_name = null;
     var link = item.link;
-    async.each(item_homes, function(itemHomeName, callback) {
+    async.each(ItemHomes, function(itemHomeName, callback) {
         var match = link.match(/timesofindia/g);
-        if(match!==null && match.length > 0) {
+        if((link.match(/timesofindia/g)!==null) && (link.match(/timesofindia/g).length > 0)) {
             //  matched to  this itemHomeName check
             item_home_name = "toi";
+            callback();
+        } else if((link.match(/imdb/g)!==null) && (link.match(/imdb/g).length > 0)) {
+            //  matched to  this itemHomeName check
+            item_home_name = "IMDB";
             callback();
         } else {
             //  did not  matched to  this itemHomeName check
             callback();
         }
     }, function(err) {
-        if(err) {
+        if (err) {
             // ERROR
-        }else {
+        } else {
             deffered.resolve({name: item_home_name});
         }
     });
@@ -65,7 +66,11 @@ movieGoogler.getMovieInfoFromGoogleItem = function(item, itemHomeName){
         toiProcessor.getRatingFromGoogleItem(item).then(function(rating) {
             deffered.resolve({rating:rating, name:itemHomeName.name});
         });
-    } else {
+    } else if(itemHomeName.name === 'IMDB') {
+        imdbProcessor.getRatingFromGoogleItem(item).then(function(rating) {
+            deffered.resolve({rating:rating, name:itemHomeName.name});
+        });
+    }else {
         // Time Of India
         // htProcessor.getRatingFromGoogleItem(item).then(rating) {
         //     deffered.resolve(rating);
@@ -91,16 +96,20 @@ movieGoogler.searchMovie = function (movieQuery) {
 
 movieGoogler.getMovieInfoFromGoogle = function (movieQuery) {
     var deffered = Q.defer();
-    var movieInfo = [];
+    var movieInfo = {};
     movieGoogler.searchMovie(movieQuery).then(function(googleSearchResult) {
         var items = googleSearchResult.items;
         async.each(items, function(item, callback) {
             movieGoogler.getItemHomeName(item).then(function(itemHomeName) {
                 if(itemHomeName.name!==null && itemHomeName.name!=="") {
                     movieGoogler.getMovieInfoFromGoogleItem(item, itemHomeName).then(function(googleMovieInfoJson) {
-                        common.mergeIn(movieInfo, googleMovieInfoJson).then(function(){
-                            callback();
-                        });
+console.log(itemHomeName.name);
+                        movieInfo[itemHomeName.name] = googleMovieInfoJson;
+
+                        callback();
+                        // common.mergeIn(movieInfo, googleMovieInfoJson).then(function(){
+                        //     callback();
+                        // });
                     });
                 } else {
                     callback();
@@ -109,7 +118,7 @@ movieGoogler.getMovieInfoFromGoogle = function (movieQuery) {
         }, function(err) {
             if( err ) {
               console.log('ERROR : ' + err);
-            } else {
+          } else {
                 deffered.resolve(movieInfo);
             }
         });

@@ -14,6 +14,7 @@ require.config({
         // GOOGLE
         movieGoogler    :   'modules/googleSearch/movieGoogler',
         toiProcessor    :   'modules/googleSearch/toiProcessor',
+        imdbProcessor    :   'modules/googleSearch/imdbProcessor',
 
         //  IWN
         iwnServices    :   'modules/iwn/iwnServices',
@@ -50,7 +51,7 @@ require.config({
         //  Resources
         movieDetailsJson  :   'resources/movieDetailsJson',
         tokenJson  :   'resources/tokenJson',
-        itemHomeNames  :   'resources/itemHomeNames',
+        ItemHomes  :   'resources/itemHomes',
 
         //  homepage
         homepage    :   'app/sections/home/components/homepage',
