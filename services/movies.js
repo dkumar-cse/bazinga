@@ -12,6 +12,8 @@ var omdbServices = require('../modules/omdb/omdbServices');
 var tmdbSearchServices = require('../modules/tmdb/tmdbSearchServices');
 var tmdbMovieServices = require('../modules/tmdb/tmdbMovieServices');
 var mongoServices = require('../modules/mongo/mongoServices');
+var ItemsCollection = require('../modules/mongo/items/ItemsCollection');
+var CastsCollection = require('../modules/mongo/casts/CastsCollection');
 var tmdbMngr = require('../modules/tmdb/tmdbMngr');
 var omdbMngr = require('../modules/omdb/omdbMngr');
 var movieDetailsJson = require('../resources/movieDetailsJson');
@@ -22,6 +24,7 @@ var movieGoogler = require('../modules/googleSearch/movieGoogler');
 
 var movies = module.exports;
 
+var ITEM_TYPE = "MOVIE";
 
 // movieGoogler.searchMovie("befikre").then(function(response) {
 //     console.log(response);
@@ -49,7 +52,7 @@ movies.getMovieFromID = function(movieId) {
 
     cacheManager.get(cacheKey).then(function(cacheResult){
         if(cacheResult  === null) {
-            mongoServices.getMovieFromCollection(movieId).then(function (result) {
+            ItemsCollection.getItemFromCollection(movieId).then(function (result) {
                 if(movies.checkForHalfResult(result)===true) {
                     var tmdbId = result.tmdbId;
                     tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {
@@ -65,7 +68,7 @@ movies.getMovieFromID = function(movieId) {
                         var response = tmdbResponse;
                         response.id = result._id;
                         response._id = result._id;
-                        mongoServices.updateMovieInCollection(response).then(function(result){
+                        ItemsCollection.updateItemInCollection(response).then(function(result){
                             deffered.resolve(result);
                         });
                     });
@@ -82,18 +85,25 @@ movies.getMovieFromID = function(movieId) {
     return deffered.promise;
 };
 
-
 movies.getMovieByID = function(req, res) {
     var movieId = req.query.id;
+    movies.getMovieResponseByID(movieId).then(function(response){
+        res.json(response);
+    });
+};
+
+movies.getMovieResponseByID = function(movieId) {
     var cacheKey = "movieIfd_" + movieId;
+
+    var deffered = Q.defer();
 
     cacheManager.get(cacheKey).then(function(cacheResult){
         console.log((cacheResult));
-        if(cacheResult  === null) {console.log("here");
-            mongoServices.getMovieFromCollection(movieId).then(function (result) {
+        if(cacheResult  === null) {console.log(7);
+            ItemsCollection.getItemFromCollection(movieId).then(function (result) {
                 if(movies.checkForHalfResult(result)===true) {
-                    var tmdbId = result.tmdbId;
-                    tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {
+                    var tmdbId = result.tmdbId;console.log(8);
+                    tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {console.log(9);
                         // var imdbId = tmdbResponse.imdbId;
                         // omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
                         //     var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
@@ -106,21 +116,25 @@ movies.getMovieByID = function(req, res) {
                         var response = tmdbResponse;
                         response.id = result._id;
                         response._id = result._id;
-                        mongoServices.updateMovieInCollection(response).then(function(result){
-                            res.json(result);
+                        ItemsCollection.updateItemInCollection(response).then(function(result){
+                            deffered.resolve(result);
+                            // res.json(result);
                         });
                     });
                 } else {
-                    cacheManager.set(cacheKey, JSON.stringify(result)).then(function(cacheSetResult) {console.log(cacheSetResult);
-                        res.json({res:"got from DB", result: result });
+                    cacheManager.set(cacheKey, JSON.stringify(result)).then(function(cacheSetResult) {
+                        deffered.resolve({res:"got from DB", result: result });
+                        // res.json({res:"got from DB", result: result });
                     });
+                    //res.json({res:"got from DB", result: result });
                 }
             });
-        } else {console.log("there");
-            console.log((cacheResult));
-            res.json({res:"got from CACHE", result: JSON.parse(cacheResult) });
+        } else {
+            deffered.resolve({res:"got from CACHE", result: JSON.parse(cacheResult) });
+            // res.json({res:"got from CACHE", result: JSON.parse(cacheResult) });
         }
     });
+    return deffered.promise;
 
 };
 
@@ -136,9 +150,10 @@ movies.saveMovieSnipInCollection = function(searchSnippet) {
     var deffered = Q.defer();
     var movieJson = new movieDetailsJson();
     movieJson.setTmdbId(searchSnippet.id);
-    mongoServices.findByTmdbId(searchSnippet.id).then(function(movieResultByTmdbId) {
+    ItemsCollection.findByTmdbId(searchSnippet.id).then(function(movieResultByTmdbId) {
         if(_.isNull(movieResultByTmdbId) || movieResultByTmdbId===null || (movieResultByTmdbId.length === 0)) {
-            mongoServices.saveMovieInCollection(movieJson).then(function (mongoResult){
+            movieJson.item_type = ITEM_TYPE;
+            ItemsCollection.saveItemInCollection(movieJson).then(function (mongoResult){
                 movieJson.setId(mongoResult.id);
                 movieJson._id = mongoResult.id;
                 deffered.resolve(movieJson);
@@ -159,6 +174,7 @@ movies.processForOwnSnippets = function (searchSnippets) {
     async.each(searchSnippets, function(searchSnippet, callback) {
         movies.saveMovieSnipInCollection(searchSnippet).then(function(savedSearchSnip){
             searchSnippet.tmdbId = searchSnippet.id;
+            searchSnippet.item_type = ITEM_TYPE;
             searchSnippet.id = savedSearchSnip._id;
             searchSnippet.poster_path = tmdbMngr.generateImageUrl(searchSnippet.poster_path);
             searchSnippet.backdrop_path = tmdbMngr.generateImageUrl(searchSnippet.backdrop_path);
@@ -169,7 +185,7 @@ movies.processForOwnSnippets = function (searchSnippets) {
     }, function(err) {
         if( err ) {
           console.log('ERROR : ' + err);
-        } else {
+      } else {
             deffered.resolve(searchSnippetsResult);
         }
     });
@@ -186,18 +202,23 @@ movies.searchMovie = function(req, res) {
     var year = req.query.yr;
     // var primaryReleaseYear = req.query.pry;
 
-    var cacheKey = "seearch_" + queryString;
+    var cacheKey = "search_" + queryString;
 
     cacheManager.get(cacheKey).then(function (cacheGetResult) {
         if(cacheGetResult === null) {
             tmdbSearchServices.searchMovie(queryString, pageNo, includeAdult, region, year, null).then(function(result) {
                 var searchSnippets = result.results;
                 movies.processForOwnSnippets(searchSnippets).then(function(finalResult) {
-                    cacheManager.set(cacheKey, JSON.stringify(finalResult)).then(function(cacheSetResult) {
-                        res.json({
-                            res : "succeded - got from TMDB",
-                            result : finalResult
-                        });
+                    // cacheManager.set(cacheKey, JSON.stringify(finalResult)).then(function(cacheSetResult) {
+                    //     res.json({
+                    //         res : "succeded - got from TMDB",
+                    //         result : finalResult
+                    //     });
+                    // });
+                    //cacheManager.set(cacheKey, JSON.stringify(finalResult));
+                    res.json({
+                        res : "succeded - got from TMDB",
+                        result : finalResult
                     });
 
                 });
@@ -260,7 +281,7 @@ movies.searchMovie = function(req, res) {
 
 movies.getTmdbMovieIdFromMovieId = function (movieId) {
     var deffered = Q.defer();
-    mongoServices.getMovieFromCollection(movieId).then(function (movieJson) {
+    ItemsCollection.getItemFromCollection(movieId).then(function (movieJson) {
         var tmdbId = movieJson.tmdbId;
         deffered.resolve(tmdbId);
     });
@@ -290,11 +311,11 @@ var manipulateEachCrew = function(crew) {
 
 movies.getMovieCasts = function(req, res) {
     var movieId = req.query.id;
-    mongoServices.getMovieCasts(movieId).then(function(result) {
+    CastsCollection.getMovieCasts(movieId).then(function(result) {
         if(result.length === 0) {
             movies.getTmdbMovieIdFromMovieId(movieId).then(function(tmdbId) {
                 tmdbMngr.getMovieCasts(tmdbId).then(function(casts){
-                    mongoServices.saveTmdbMovieCasts(movieId, casts).then(function(castsResult) {
+                    CastsCollection.saveTmdbMovieCasts(movieId, casts).then(function(castsResult) {
                         castsResult.casts = manipulateEachCast(castsResult.casts);
                         castsResult.crew = manipulateEachCrew(castsResult.crew);
                         res.json(castsResult);
