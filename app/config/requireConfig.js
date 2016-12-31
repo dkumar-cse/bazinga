@@ -8,8 +8,12 @@ require.config({
         //  CACHE MANAGER
         cacheManager  :   'modules/cache/cacheManager',
 
+        //  utils
+        common : 'modules/utils/common',
+
         // GOOGLE
         movieGoogler    :   'modules/googleSearch/movieGoogler',
+        toiProcessor    :   'modules/googleSearch/toiProcessor',
 
         //  IWN
         iwnServices    :   'modules/iwn/iwnServices',
@@ -46,6 +50,7 @@ require.config({
         //  Resources
         movieDetailsJson  :   'resources/movieDetailsJson',
         tokenJson  :   'resources/tokenJson',
+        itemHomeNames  :   'resources/itemHomeNames',
 
         //  homepage
         homepage    :   'app/sections/home/components/homepage',

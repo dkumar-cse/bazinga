@@ -16,6 +16,10 @@ router.get('/movie/casts', function(req, res) {
     movies.getMovieCasts(req, res);
 });
 
+router.get('/movie/ratrev', function(req, res) {
+    movies.getMovieRatingsAndReviews(req, res);
+});
+
 router.get('/movie', function(req, res) {
     movies.getMovieByID(req, res);
 });

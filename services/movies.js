@@ -43,6 +43,46 @@ movies.checkForHalfResult = function(movieJson) {
     return false;
 };
 
+movies.getMovieFromID = function(movieId) {
+    var cacheKey = "movieIfd_" + movieId;
+    var deffered = Q.defer();
+
+    cacheManager.get(cacheKey).then(function(cacheResult){
+        if(cacheResult  === null) {
+            mongoServices.getMovieFromCollection(movieId).then(function (result) {
+                if(movies.checkForHalfResult(result)===true) {
+                    var tmdbId = result.tmdbId;
+                    tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {
+                        // var imdbId = tmdbResponse.imdbId;
+                        // omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+                        //     var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
+                        //     response.id = result._id;
+                        //     response._id = result._id;
+                        //     mongoServices.updateMovieInCollection(response).then(function(result){
+                        //         res.json(result);
+                        //     });
+                        // });
+                        var response = tmdbResponse;
+                        response.id = result._id;
+                        response._id = result._id;
+                        mongoServices.updateMovieInCollection(response).then(function(result){
+                            deffered.resolve(result);
+                        });
+                    });
+                } else {
+                    cacheManager.set(cacheKey, JSON.stringify(result)).then(function(cacheSetResult) {
+                        deffered.resolve({res:"got from DB", result: result });
+                    });
+                }
+            });
+        } else {
+            deffered.resolve({res:"got from CACHE", result: JSON.parse(cacheResult) });
+        }
+    });
+    return deffered.promise;
+};
+
+
 movies.getMovieByID = function(req, res) {
     var movieId = req.query.id;
     var cacheKey = "movieIfd_" + movieId;
@@ -88,9 +128,7 @@ movies.mergeIn = function (a1, a2) {
     var deffered = Q.defer();
     a1.push(a2);
     deffered.resolve(a1);
-
     return deffered.promise;
-
 };
 
 
@@ -269,6 +307,15 @@ movies.getMovieCasts = function(req, res) {
             castsResult.crew = manipulateEachCrew(castsResult.crew);
             res.json(castsResult);
         }
+    });
+};
+
+movies.getMovieRatingsAndReviews = function(req, res) {
+    var movieId = req.query.id;
+    movies.getMovieFromID(movieId).then(function (movieResult) {
+        movieGoogler.getMovieInfoFromGoogle(movieResult.result.title).then(function(googleResult) {
+                res.json(googleResult);
+        });
     });
 };
 

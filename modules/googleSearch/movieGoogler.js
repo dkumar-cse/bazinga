@@ -5,10 +5,15 @@
  *
  */
 
- "use strict";
 
 var rp = require('request-promise');
+var request = require('request');
+var _ = require('lodash');
 var Q = require('q');
+var async = require('async');
+var itemHomes = require('../../resources/itemHomes');
+var toiProcessor = require('./toiProcessor');
+var common = require('../../modules/utils/common');
 
 var google = require('googleapis');
 var customsearch = google.customsearch('v1');
@@ -25,6 +30,51 @@ var movieGoogler = module.exports;
 *
 */
 
+movieGoogler.getItemHomeName = function(item) {
+    var deffered = Q.defer();
+    var item_homes = {
+        name : "TimesOfIndia",
+        keyword : "timesofindia"
+    };//new itemHomes();
+    var item_home_name = null;
+    var link = item.link;
+    async.each(item_homes, function(itemHomeName, callback) {
+        var match = link.match(/timesofindia/g);
+        if(match!==null && match.length > 0) {
+            //  matched to  this itemHomeName check
+            item_home_name = "toi";
+            callback();
+        } else {
+            //  did not  matched to  this itemHomeName check
+            callback();
+        }
+    }, function(err) {
+        if(err) {
+            // ERROR
+        }else {
+            deffered.resolve({name: item_home_name});
+        }
+    });
+    return deffered.promise;
+};
+
+movieGoogler.getMovieInfoFromGoogleItem = function(item, itemHomeName){
+    var deffered = Q.defer();
+    if(itemHomeName.name === 'toi') {
+        // Time Of India
+        toiProcessor.getRatingFromGoogleItem(item).then(function(rating) {
+            deffered.resolve({rating:rating, name:itemHomeName.name});
+        });
+    } else {
+        // Time Of India
+        // htProcessor.getRatingFromGoogleItem(item).then(rating) {
+        //     deffered.resolve(rating);
+        // };
+        deffered.resolve({});
+    }
+    return deffered.promise;
+};
+
 movieGoogler.searchMovie = function (movieQuery) {
     var deferred = Q.defer();
     customsearch.cse.list({ cx: CX, q: movieQuery, auth: API_KEY }, function (err, resp) {
@@ -36,9 +86,37 @@ movieGoogler.searchMovie = function (movieQuery) {
             deferred.resolve(resp);
         }
     });
-
     return deferred.promise;
 };
+
+movieGoogler.getMovieInfoFromGoogle = function (movieQuery) {
+    var deffered = Q.defer();
+    var movieInfo = [];
+    movieGoogler.searchMovie(movieQuery).then(function(googleSearchResult) {
+        var items = googleSearchResult.items;
+        async.each(items, function(item, callback) {
+            movieGoogler.getItemHomeName(item).then(function(itemHomeName) {
+                if(itemHomeName.name!==null && itemHomeName.name!=="") {
+                    movieGoogler.getMovieInfoFromGoogleItem(item, itemHomeName).then(function(googleMovieInfoJson) {
+                        common.mergeIn(movieInfo, googleMovieInfoJson).then(function(){
+                            callback();
+                        });
+                    });
+                } else {
+                    callback();
+                }
+            });
+        }, function(err) {
+            if( err ) {
+              console.log('ERROR : ' + err);
+            } else {
+                deffered.resolve(movieInfo);
+            }
+        });
+    });
+    return deffered.promise;
+};
+
 
 /*
 movieGoogler.searchMovie = function(movieQuery) {
