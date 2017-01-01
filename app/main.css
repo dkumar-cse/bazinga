@@ -383,4 +383,5 @@ h3.ng-binding {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    margin-bottom: 3px;
 }
