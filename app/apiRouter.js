@@ -21,6 +21,14 @@ router.get('/movie/ratrev', function(req, res) {
     movies.getMovieRatingsAndReviews(req, res);
 });
 
+router.get('/movie/googletextsearch', function(req, res) {
+
+        movieGoogler.searchMovie(req.query.q+" review").then(function(result) {console.log(result);
+            res.json(result);
+        });
+
+});
+
 router.get('/movie/googleresult', function(req, res) {
     movies.getMovieFromID(req.query.id).then(function (movieResult) {
         movieGoogler.searchMovie(movieResult.result.title).then(function(result) {

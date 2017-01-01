@@ -14,6 +14,7 @@ var tmdbMovieServices = require('../modules/tmdb/tmdbMovieServices');
 var mongoServices = require('../modules/mongo/mongoServices');
 var ItemsCollection = require('../modules/mongo/items/ItemsCollection');
 var CastsCollection = require('../modules/mongo/casts/CastsCollection');
+var ReviewsCollection = require('../modules/mongo/reviews/ReviewsCollection');
 var tmdbMngr = require('../modules/tmdb/tmdbMngr');
 var omdbMngr = require('../modules/omdb/omdbMngr');
 var movieDetailsJson = require('../resources/movieDetailsJson');
@@ -330,11 +331,25 @@ movies.getMovieCasts = function(req, res) {
 
 movies.getMovieRatingsAndReviews = function(req, res) {
     var movieId = req.query.id;
-    movies.getMovieFromID(movieId).then(function (movieResult) {
-        movieGoogler.getMovieInfoFromGoogle(movieResult.result.title).then(function(googleResult) {
-                res.json(googleResult);
-        });
+    ReviewsCollection.getMovieRatingsAndReviews(movieId).then(function(result){
+        if(result.length===0) {
+            movies.getMovieFromID(movieId).then(function (movieResult) {
+                movieGoogler.getMovieInfoFromGoogle(movieResult.result.title + " review").then(function(googleResult) {
+                    var data = googleResult;
+                    var reviewAndRating = {item_id:movieId, data: data};
+                    ReviewsCollection.saveMovieRatingsAndReviews(movieId, reviewAndRating).then(function(result) {
+                        reviewAndRating.got_from = "GOOGLE";
+                        res.json(reviewAndRating);
+                    });
+                });
+            });
+        } else {
+            result[0].got_from = "DB";
+            res.json(result[0]);
+        }
+
     });
+
 };
 
 module.exports = movies;
