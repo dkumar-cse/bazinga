@@ -26,9 +26,6 @@ var movies = module.exports;
 
 var ITEM_TYPE = "MOVIE";
 
-// movieGoogler.searchMovie("befikre").then(function(response) {
-//     console.log(response);
-// });
 var customizer = function (objValue, srcValue) {
 
   if (_.isNull(objValue) || objValue=="") {
@@ -47,7 +44,7 @@ movies.checkForHalfResult = function(movieJson) {
 };
 
 movies.getMovieFromID = function(movieId) {
-    var cacheKey = "movieIfd_" + movieId;
+    var cacheKey = "movieId_" + movieId;
     var deffered = Q.defer();
 
     cacheManager.get(cacheKey).then(function(cacheResult){
@@ -56,21 +53,21 @@ movies.getMovieFromID = function(movieId) {
                 if(movies.checkForHalfResult(result)===true) {
                     var tmdbId = result.tmdbId;
                     tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {
-                        // var imdbId = tmdbResponse.imdbId;
-                        // omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
-                        //     var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
-                        //     response.id = result._id;
-                        //     response._id = result._id;
-                        //     mongoServices.updateMovieInCollection(response).then(function(result){
-                        //         res.json(result);
-                        //     });
-                        // });
-                        var response = tmdbResponse;
-                        response.id = result._id;
-                        response._id = result._id;
-                        ItemsCollection.updateItemInCollection(response).then(function(result){
-                            deffered.resolve(result);
+                        var imdbId = tmdbResponse.imdbId;
+                        omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+                            var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
+                            response.id = result._id;
+                            response._id = result._id;
+                            mongoServices.updateMovieInCollection(response).then(function(result){
+                                res.json(result);
+                            });
                         });
+                        // var response = tmdbResponse;
+                        // response.id = result._id;
+                        // response._id = result._id;
+                        // ItemsCollection.updateItemInCollection(response).then(function(result){
+                        //     deffered.resolve(result);
+                        // });
                     });
                 } else {
                     cacheManager.set(cacheKey, JSON.stringify(result)).then(function(cacheSetResult) {

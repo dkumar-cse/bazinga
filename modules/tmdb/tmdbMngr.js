@@ -5,6 +5,7 @@ var Q = require('q');
 var _ = require('lodash');
 var tmdbMovieServices = require('./tmdbMovieServices');
 var movieDetailsJson = require('../../resources/movieDetailsJson');
+var itemDetailJson = require('../../resources/itemDetailJson');
 var tokenJson = require('../../resources/tokenJson');
 
 var client = redis.createClient();
@@ -145,4 +146,6 @@ tmdbMngr.getMovieCasts = function (movieId) {
     });
     return deffered.promise;
 };
+
+ 
 module.exports = tmdbMngr;

@@ -83,7 +83,7 @@ movieGoogler.getMovieInfoFromGoogleItem = function(item, itemHomeName){
 movieGoogler.searchMovie = function (movieQuery) {
     var deferred = Q.defer();
     customsearch.cse.list({ cx: CX, q: movieQuery, auth: API_KEY }, function (err, resp) {
-        if (err) {
+        if (err) {console.log(err);
             deferred.reject(err);
         }
         // Got the response from custom search

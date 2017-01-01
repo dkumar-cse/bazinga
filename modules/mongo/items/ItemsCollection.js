@@ -30,7 +30,7 @@ ItemsCollection.getItemFromCollection = function(itemId) {
 
             } else {
                 deffered.resolve(result);
-                console.log('No document(s) found with defined "find" criteria in "mongoServices.getMovieFromCollection  " + { _id:'+ parseInt(movieId) +'}');
+                console.log('No document(s) found with defined "find" criteria in "mongoServices.getMovieFromCollection  " + { _id:'+ parseInt(itemId) +'}');
             }
             //Close connection
             mongoServices.returnDbConnection(db);
