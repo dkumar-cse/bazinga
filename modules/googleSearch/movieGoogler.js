@@ -14,6 +14,7 @@ var async = require('async');
 var ItemHomes = require('../../resources/itemHomes');
 var toiProcessor = require('./toiProcessor');
 var imdbProcessor = require('./imdbProcessor');
+var mmProcessor = require('./mmProcessor');
 var common = require('../../modules/utils/common');
 
 var google = require('googleapis');
@@ -70,6 +71,10 @@ movieGoogler.getMovieInfoFromGoogleItem = function(item, itemHomeName){
         imdbProcessor.getRatingFromGoogleItem(item).then(function(rating) {
             deffered.resolve({rating:rating, name:itemHomeName.name});
         });
+    }else if(itemHomeName.name === 'mm') {
+        mmProcessor.getRatingFromGoogleItem(item).then(function(rating) {
+            deffered.resolve({rating:rating, name:itemHomeName.name});
+        });
     }else {
         // Time Of India
         // htProcessor.getRatingFromGoogleItem(item).then(rating) {
@@ -83,7 +88,7 @@ movieGoogler.getMovieInfoFromGoogleItem = function(item, itemHomeName){
 movieGoogler.searchMovie = function (movieQuery) {
     var deferred = Q.defer();
     customsearch.cse.list({ cx: CX, q: movieQuery, auth: API_KEY }, function (err, resp) {
-        if (err) {console.log(err);
+        if (err) {
             deferred.reject(err);
         }
         // Got the response from custom search
@@ -103,7 +108,7 @@ movieGoogler.getMovieInfoFromGoogle = function (movieQuery) {
             movieGoogler.getItemHomeName(item).then(function(itemHomeName) {
                 if(itemHomeName.name!==null && itemHomeName.name!=="") {
                     movieGoogler.getMovieInfoFromGoogleItem(item, itemHomeName).then(function(googleMovieInfoJson) {
-console.log(itemHomeName.name);
+
                         movieInfo[itemHomeName.name] = googleMovieInfoJson;
 
                         callback();
