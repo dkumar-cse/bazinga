@@ -27,9 +27,9 @@ define(['boost', 'q'], function (app, Q, mdc) {
 
             $scope.overview = result.overview;
             $scope.plot = result.plot;
-            $scope.directors = result.directors;
-            $scope.writers = result.writers;
-            $scope.casts = result.casts;
+            // $scope.directors = result.directors;
+            // $scope.writers = result.writers;
+            // $scope.casts = result.casts;
             $scope.awardInfo = result.awardInfo;
             $scope.duration = result.duration;
             $scope.release_date = result.releaseDate;
@@ -51,9 +51,12 @@ define(['boost', 'q'], function (app, Q, mdc) {
 
             var result = response;
 
-            $scope.casts = result.casts;
-            $scope.directors = result.crew;
+            // $scope.casts = result.casts;
+            // $scope.directors = result.crew;
 
+            $scope.directors = result.crew.directors;
+            $scope.writers = result.crew.writers;
+            $scope.casts = result.casts;
 
             //  Render Movie Content  -  END
 

@@ -7,6 +7,7 @@
 var request = require('request');
 var _ = require('lodash');
 var Q = require('q');
+var castsProcessor = require('../modules/utils/castsProcessor');
 var iwnServices = require('../modules/iwn/iwnServices');
 var omdbServices = require('../modules/omdb/omdbServices');
 var tmdbSearchServices = require('../modules/tmdb/tmdbSearchServices');
@@ -50,7 +51,7 @@ movies.getMovieFromID = function(movieId) {
 
     cacheManager.get(cacheKey).then(function(cacheResult){
         if(cacheResult  === null) {
-            ItemsCollection.getItemFromCollection(movieId).then(function (result) {console.log(result);
+            ItemsCollection.getItemFromCollection(movieId).then(function (result) {
                 if(movies.checkForHalfResult(result)===true) {
                     var tmdbId = result.tmdbId;
                     tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {
@@ -96,7 +97,6 @@ movies.getMovieResponseByID = function(movieId) {
     var deffered = Q.defer();
 
     cacheManager.get(cacheKey).then(function(cacheResult){
-        console.log((cacheResult));
         if(cacheResult  === null) {console.log(7);
             ItemsCollection.getItemFromCollection(movieId).then(function (result) {
                 if(movies.checkForHalfResult(result)===true) {
@@ -203,7 +203,7 @@ movies.searchMovie = function(req, res) {
     var cacheKey = "search_" + queryString;
 
     cacheManager.get(cacheKey).then(function (cacheGetResult) {
-        if(cacheGetResult === null) {
+        if(cacheGetResult === null || true) {
             tmdbSearchServices.searchMovie(queryString, pageNo, includeAdult, region, year, null).then(function(result) {
                 var searchSnippets = result.results;
                 movies.processForOwnSnippets(searchSnippets).then(function(finalResult) {
@@ -310,21 +310,33 @@ var manipulateEachCrew = function(crew) {
 movies.getMovieCasts = function(req, res) {
     var movieId = req.query.id;
     CastsCollection.getMovieCasts(movieId).then(function(result) {
-        if(result.length === 0) {
+        if(result.length === 0) {console.log(1);
             movies.getTmdbMovieIdFromMovieId(movieId).then(function(tmdbId) {
                 tmdbMngr.getMovieCasts(tmdbId).then(function(casts){
                     CastsCollection.saveTmdbMovieCasts(movieId, casts).then(function(castsResult) {
+                        // castsResult.casts = manipulateEachCast(castsResult.casts);
+                        // castsResult.crew = manipulateEachCrew(castsResult.crew);
+                        // res.json(castsResult);
                         castsResult.casts = manipulateEachCast(castsResult.casts);
                         castsResult.crew = manipulateEachCrew(castsResult.crew);
-                        res.json(castsResult);
+                        castsProcessor.seperateCrew(castsResult.crew).then(function(seperatedCrew) {
+                            castsResult.crew = seperatedCrew;
+                            res.json(castsResult);
+                        });
                     });
                 });
             });
         } else {
             var castsResult = result[0];
+            // castsResult.casts = manipulateEachCast(castsResult.casts);
+            // castsResult.crew = manipulateEachCrew(castsResult.crew);
+            // res.json(castsResult);
             castsResult.casts = manipulateEachCast(castsResult.casts);
             castsResult.crew = manipulateEachCrew(castsResult.crew);
-            res.json(castsResult);
+            castsProcessor.seperateCrew(castsResult.crew).then(function(seperatedCrew) {
+                castsResult.crew = seperatedCrew;
+                res.json(castsResult);
+            });
         }
     });
 };
