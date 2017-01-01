@@ -62,6 +62,7 @@ movieGoogler.getItemHomeName = function(item) {
     }, function(err) {
         if (err) {
             // ERROR
+            console.log(err);
         } else {
             deffered.resolve({name: item_home_name});
         }
@@ -98,10 +99,11 @@ movieGoogler.getMovieInfoFromGoogleItem = function(item, itemHomeName){
     return deffered.promise;
 };
 
-movieGoogler.searchMovie = function (movieQuery) {console.log(movieQuery);
+movieGoogler.searchMovie = function (movieQuery) {
     var deferred = Q.defer();
     customsearch.cse.list({ cx: CX, q: movieQuery, auth: API_KEY }, function (err, resp) {
-        if (err) {console.log(err);console.log(resp);
+        if (err) {
+            console.log(err);
             deferred.reject(err);
         }
         // Got the response from custom search

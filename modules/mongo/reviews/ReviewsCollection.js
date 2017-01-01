@@ -44,6 +44,7 @@ ReviewsCollection.saveMovieRatingsAndReviews = function (movieId, movieRatRev) {
     mongoServices.getDbConnection().then(function(db) {
         console.log('Connection established to bazinga in ReviewsCollection.saveMovieRatingAndReviews');
         movieRatRev.item_id = parseInt(movieId);
+        movieRatRev.item_type = "MOVIE";
         db.collection(collectionName).update({item_id:parseInt(movieId)}, movieRatRev, {upsert:true}).then(function(result) {
             deffered.resolve({msg:"movie review updated for movie ID = " + movieId});
         });
