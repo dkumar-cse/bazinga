@@ -203,7 +203,7 @@ movies.searchMovie = function(req, res) {
     var cacheKey = "search_" + queryString;
 
     cacheManager.get(cacheKey).then(function (cacheGetResult) {
-        if(cacheGetResult === null || true) {
+        if(cacheGetResult === null) {
             tmdbSearchServices.searchMovie(queryString, pageNo, includeAdult, region, year, null).then(function(result) {
                 var searchSnippets = result.results;
                 movies.processForOwnSnippets(searchSnippets).then(function(finalResult) {
@@ -310,7 +310,7 @@ var manipulateEachCrew = function(crew) {
 movies.getMovieCasts = function(req, res) {
     var movieId = req.query.id;
     CastsCollection.getMovieCasts(movieId).then(function(result) {
-        if(result.length === 0) {console.log(1);
+        if(result.length === 0) {
             movies.getTmdbMovieIdFromMovieId(movieId).then(function(tmdbId) {
                 tmdbMngr.getMovieCasts(tmdbId).then(function(casts){
                     CastsCollection.saveTmdbMovieCasts(movieId, casts).then(function(castsResult) {
