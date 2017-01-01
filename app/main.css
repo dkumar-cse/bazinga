@@ -332,3 +332,55 @@
 .header_search {
     align-content: center;
 }
+
+.casts-avatar {
+    width: 45px;
+    height: 60px;
+    border-radius: 1%;
+    margin-top: 12px;
+    flex: none;
+    margin-bottom: 8px;
+    margin-right: 16px;
+    box-sizing: content-box;
+}
+
+.line-120 {
+    width: 120px;
+    height: 2px;
+    background-color: #f4e425;
+}
+.line-200 {
+    width: 200px;
+    height: 1px;
+}
+.grey-color {
+    background-color: rgba(158, 158, 153, 0.49);
+}
+.red-color {
+    background-color: #e81818;
+}
+.yellow-color {
+    background-color: #e4de23;
+}
+.green-color {
+    background-color: #77b90e;
+}
+.list-item-text{
+    flex: 1 1 auto;
+    margin-top: auto;
+    padding-bottom: 8px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+}
+
+h3.ng-binding {
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.010em;
+    margin: 0 0 0px 0;
+    line-height: 1.2em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
