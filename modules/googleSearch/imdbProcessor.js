@@ -9,7 +9,6 @@ imdbProcessor.verifyRating = function (rating, item) {
 
 imdbProcessor.getRatingFromGoogleItem = function (item) {
     var deffered = Q.defer();
-    console.log(item.pagemap.aggregaterating);
     deffered.resolve(item.pagemap.aggregaterating[0]);
     return deffered.promise;
 };

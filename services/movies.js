@@ -49,7 +49,7 @@ movies.getMovieFromID = function(movieId) {
 
     cacheManager.get(cacheKey).then(function(cacheResult){
         if(cacheResult  === null) {
-            ItemsCollection.getItemFromCollection(movieId).then(function (result) {
+            ItemsCollection.getItemFromCollection(movieId).then(function (result) {console.log(result);
                 if(movies.checkForHalfResult(result)===true) {
                     var tmdbId = result.tmdbId;
                     tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {

@@ -46,6 +46,10 @@ movieGoogler.getItemHomeName = function(item) {
             //  matched to  this itemHomeName check
             item_home_name = "IMDB";
             callback();
+        } else if((link.match(/moviemutants/g)!==null) && (link.match(/moviemutants/g).length > 0)) {
+            //  matched to  this itemHomeName check
+            item_home_name = "mm";
+            callback();
         } else {
             //  did not  matched to  this itemHomeName check
             callback();
