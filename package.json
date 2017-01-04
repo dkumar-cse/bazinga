@@ -43,6 +43,7 @@
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "requirejs": "^2.3.2",
-    "requirejs-domready": "^2.0.3"
+    "requirejs-domready": "^2.0.3",
+    "sharp": "^0.17.0"
   }
 }
