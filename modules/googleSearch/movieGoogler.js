@@ -45,7 +45,7 @@ movieGoogler.getItemHomeName = function(item) {
             callback();
         } else if((link.match(/imdb/g)!==null) && (link.match(/imdb/g).length > 0)) {
             //  matched to  this itemHomeName check
-            item_home_name = "IMDB";
+            item_home_name = "imdb";
             callback();
         } else if((link.match(/moviemutants/g)!==null) && (link.match(/moviemutants/g).length > 0)) {
             //  matched to  this itemHomeName check
@@ -74,19 +74,19 @@ movieGoogler.getMovieInfoFromGoogleItem = function(item, itemHomeName){
     var deffered = Q.defer();
     if(itemHomeName.name === 'toi') {
         // Time Of India
-        toiProcessor.getRatingFromGoogleItem(item).then(function(rating) {
+        toiProcessor.getRatingFromGoogleItem(item).then(function(rating) {console.log('toi');console.log(rating);
             deffered.resolve({rating:rating, name:itemHomeName.name});
         });
-    } else if(itemHomeName.name === 'IMDB') {
-        imdbProcessor.getRatingFromGoogleItem(item).then(function(rating) {
+    } else if(itemHomeName.name === 'imdb') {
+        imdbProcessor.getRatingFromGoogleItem(item).then(function(rating) {console.log("imdb_id");console.log(rating);
             deffered.resolve({rating:rating, name:itemHomeName.name});
         });
     }else if(itemHomeName.name === 'mm') {
-        mmProcessor.getRatingFromGoogleItem(item).then(function(rating) {
+        mmProcessor.getRatingFromGoogleItem(item).then(function(rating) {console.log('mm');console.log(rating);
             deffered.resolve({rating:rating, name:itemHomeName.name});
         });
     }else if(itemHomeName.name === 'bh') {
-        bhProcessor.getRatingFromGoogleItem(item).then(function(rating) {
+        bhProcessor.getRatingFromGoogleItem(item).then(function(rating) {console.log('bh');console.log(rating);
             deffered.resolve({rating:rating, name:itemHomeName.name});
         });
     }else {
@@ -120,7 +120,7 @@ movieGoogler.getMovieInfoFromGoogle = function (movieQuery) {
     movieGoogler.searchMovie(movieQuery).then(function(googleSearchResult) {
         var items = googleSearchResult.items;
         async.each(items, function(item, callback) {
-            movieGoogler.getItemHomeName(item).then(function(itemHomeName) {
+            movieGoogler.getItemHomeName(item).then(function(itemHomeName) {console.log(itemHomeName);
                 if(itemHomeName.name!==null && itemHomeName.name!=="") {
                     movieGoogler.getMovieInfoFromGoogleItem(item, itemHomeName).then(function(googleMovieInfoJson) {
 

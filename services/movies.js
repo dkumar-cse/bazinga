@@ -50,18 +50,18 @@ movies.getMovieFromID = function(movieId) {
     var deffered = Q.defer();
 
     cacheManager.get(cacheKey).then(function(cacheResult){
-        if(cacheResult  === null) {
+        if(cacheResult  === null || true) {
             ItemsCollection.getItemFromCollection(movieId).then(function (result) {
-                if(movies.checkForHalfResult(result)===true) {
+                if(movies.checkForHalfResult(result)===true || true) {
                     var tmdbId = result.tmdbId;
                     tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {
                         var imdbId = tmdbResponse.imdbId;
-                        omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+                        omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {console.log(omdbResponse);
                             var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
                             response.id = result._id;
                             response._id = result._id;
-                            mongoServices.updateMovieInCollection(response).then(function(result){
-                                res.json(result);
+                            ItemsCollection.updateItemInCollection(response).then(function(result){
+                                deffered.resolve(result);
                             });
                         });
                         // var response = tmdbResponse;
@@ -92,38 +92,38 @@ movies.getMovieByID = function(req, res) {
 };
 
 movies.getMovieResponseByID = function(movieId) {
-    var cacheKey = "movieIfd_" + movieId;
+    var cacheKey = "movieIddd_" + movieId;
 
     var deffered = Q.defer();
 
     cacheManager.get(cacheKey).then(function(cacheResult){
-        if(cacheResult  === null) {console.log(7);
+        if(cacheResult  === null ) {
             ItemsCollection.getItemFromCollection(movieId).then(function (result) {
                 if(movies.checkForHalfResult(result)===true) {
-                    var tmdbId = result.tmdbId;console.log(8);
-                    tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {console.log(9);
-                        // var imdbId = tmdbResponse.imdbId;
-                        // omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
-                        //     var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
-                        //     response.id = result._id;
-                        //     response._id = result._id;
-                        //     mongoServices.updateMovieInCollection(response).then(function(result){
-                        //         res.json(result);
-                        //     });
-                        // });
-                        var response = tmdbResponse;
-                        response.id = result._id;
-                        response._id = result._id;
-                        ItemsCollection.updateItemInCollection(response).then(function(result){
-                            deffered.resolve(result);
-                            // res.json(result);
+                    var tmdbId = result.tmdbId;
+                    tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {
+                        var imdbId = tmdbResponse.imdbId;
+                        omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+                            var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
+                            response.id = result._id;
+                            response._id = result._id;
+                            ItemsCollection.updateItemInCollection(response).then(function(result){
+                                deffered.resolve({res:"got from external_api", result: result });
+                            });
                         });
+                        // var response = tmdbResponse;
+                        // response.id = result._id;
+                        // response._id = result._id;
+                        // ItemsCollection.updateItemInCollection(response).then(function(result){
+                        //     deffered.resolve(result);
+                        //     // res.json(result);
+                        // });
                     });
                 } else {
-                    cacheManager.set(cacheKey, JSON.stringify(result)).then(function(cacheSetResult) {
+                    //cacheManager.set(cacheKey, JSON.stringify(result)).then(function(cacheSetResult) {
                         deffered.resolve({res:"got from DB", result: result });
                         // res.json({res:"got from DB", result: result });
-                    });
+                    //});
                     //res.json({res:"got from DB", result: result });
                 }
             });
@@ -200,7 +200,7 @@ movies.searchMovie = function(req, res) {
     var year = req.query.yr;
     // var primaryReleaseYear = req.query.pry;
 
-    var cacheKey = "search_" + queryString;
+    var cacheKey = "searchhh_" + queryString;
 
     cacheManager.get(cacheKey).then(function (cacheGetResult) {
         if(cacheGetResult === null) {
@@ -347,7 +347,7 @@ movies.getMovieRatingsAndReviews = function(req, res) {
         if(result.length===0) {
             movies.getMovieFromID(movieId).then(function (movieResult) {
                 movieGoogler.getMovieInfoFromGoogle(movieResult.result.title + " review").then(function(googleResult) {
-                    var data = googleResult;
+                    var data = googleResult;console.log(data);
                     var reviewAndRating = {item_id:movieId, data: data};
                     ReviewsCollection.saveMovieRatingsAndReviews(movieId, reviewAndRating).then(function(result) {
                         reviewAndRating.got_from = "GOOGLE";

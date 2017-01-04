@@ -6,7 +6,7 @@ var ItemHomes = [{
         name : "TimesOfIndia",
         keyword : "timesofindia"
     },{
-        name : "IMDB",
+        name : "imdb",
         keyword : "www.imdb.com"
     },{
         name : "mm", //miviemutants

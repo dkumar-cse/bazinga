@@ -15,64 +15,56 @@
                         <div class="movie_page_tagline">{{ tagline }}</div>
                     </div>
                     <div class="movie_info_row">
-                        <div class="directed_by_row">
+                        <!-- <div class="directed_by_row">
                             <div class="directed_by">directed by:</div>
                             <div class="directed_by_names">
                                 <div class="directed_by_name">Bob Kane (characters)</div>
                                 <div class="directed_by_name">David S. Goyer (story)</div>
                                 <div class="directed_by_name">Christopher Nolan (screenplay)</div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
             <div class="movie_body_header_right_part" >
                 <div class="rating_box">
-                    <div class="rating_row_adjust">
+                    <div class="rating_row_adjust" ng-if="imdbRating.rating">
                         <div class="movie_rating_row">
-                            <div class="rating_value">7.5</div>
-                            <div class="rating_name">TOI</div>
+                            <div class="rating_value">{{imdbRating.rating.ratingvalue}}/{{imdbRating.rating.bestrating}}</div>
+                            <div class="rating_name">IMDB</div>
                         </div>
                     </div>
-                    <div class="rating_row_adjust">
+                    <div class="rating_row_adjust" ng-if="imdbRating.rating">
                         <div class="title_bump"></div>
                     </div>
-                    <div class="rating_row_adjust">
+                    <div class="rating_row_adjust" ng-if="bhRating.rating">
                         <div class="movie_rating_row">
-                            <div class="rating_value">7.5</div>
-                            <div class="rating_name">TOI</div>
+                            <div class="rating_value">{{bhRating.rating.ratingvalue}}/{{bhRating.rating.bestrating}}</div>
+                            <div class="rating_name">Bollywoodhungama</div>
                         </div>
                     </div>
-                    <div class="rating_row_adjust">
+                    <div class="rating_row_adjust" ng-if="bhRating.rating">
                         <div class="title_bump"></div>
                     </div>
-                    <div class="rating_row_adjust">
+                    <div class="rating_row_adjust" ng-if="mmRating.rating">
                         <div class="movie_rating_row">
-                            <div class="rating_value">7.5</div>
-                            <div class="rating_name">TOI</div>
+                            <div class="rating_value">{{mmRating.rating.ratingvalue}}/5</div>
+                            <div class="rating_name">Moviemutants</div>
                         </div>
                     </div>
-                    <div class="rating_row_adjust">
+                    <div class="rating_row_adjust" ng-if="mmRating.rating">
                         <div class="title_bump"></div>
                     </div>
-                    <div class="rating_row_adjust">
+                    <div class="rating_row_adjust" ng-if="toiRating.rating">
                         <div class="movie_rating_row">
-                            <div class="rating_value">7.5</div>
-                            <div class="rating_name">TOI</div>
+                            <div class="rating_value">{{toiRating.rating}}</div>
+                            <div class="rating_name">TimesOfIndia</div>
                         </div>
                     </div>
-                    <div class="rating_row_adjust">
+                    <div class="rating_row_adjust" ng-if="toiRating.rating">
                         <div class="title_bump"></div>
                     </div>
-                    <div class="rating_row_adjust">
-                        <div class="movie_rating_row">
-                            <div class="rating_value">7.5</div>
-                            <div class="rating_name">TOI</div>
-                        </div>
-                    </div>
-                    <div class="rating_row_adjust">
-                        <div class="title_bump"></div>
-                    </div>
+
                 </div>
 
             </div>
