@@ -88,14 +88,7 @@ imgService.reScale = function(localOrigingalImgPath, location, imgUrl, options) 
     imgService.checkOrCreate(location).then(function(result) {
         if(result.msg==="folder_created" || result.msg==="folder_present") {
             console.log("Pic specific Directory created successfully!");
-            if(options.crop===1) {
-                sharp(localOrigingalImgPath)
-                  .resize(parseInt(options.width), parseInt(options.height))
-                  .toFile(localImgPath, function(err, info) {
-                    console.log('File resizing to', localImgPath);
-                    deffered.resolve({path:localImgPath});
-                  });
-            } else if(options.preserveAspect===1) {
+            if(options.preserveAspect===1) {
                 sharp(localOrigingalImgPath)
                   .resize(parseInt(options.width), parseInt(options.height))
                   .embed()
@@ -104,7 +97,13 @@ imgService.reScale = function(localOrigingalImgPath, location, imgUrl, options) 
                     deffered.resolve({path:localImgPath});
                   });
             } else {
-                deffered.resolve({err:"error in imgService.reScale"});
+                // crop by default
+                sharp(localOrigingalImgPath)
+                  .resize(parseInt(options.width), parseInt(options.height))
+                  .toFile(localImgPath, function(err, info) {
+                    console.log('File resizing to', localImgPath);
+                    deffered.resolve({path:localImgPath});
+                  });
             }
         }
     });
@@ -117,10 +116,11 @@ var getImageFileLocation = function(options) {
     var height = options.height;
 
     var location = pic_root_location + "/x/" + width + "/" + height;
-    if(options.crop===1) {
-        location = location + "/crop";
-    } else if(options.preserveAspect===1) {
+    if(options.preserveAspect===1) {
         location = location + "/aspect";
+    } else if(options.crop===1 && width!=='o' && height!=='p'){
+        // default -> put in crop folder
+        location = location + "/crop";
     }
     return location;
 };

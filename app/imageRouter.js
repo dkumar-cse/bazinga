@@ -20,7 +20,7 @@ var imgService = require('../services/imgService');
 
 router.get('/resize', function(req, res) {console.log("jjj");
 console.log(req.query);
-    var imgUrl = req.query.url;
+    var imgUrl = req.query.u;
     var options = {};
 
     options.width = req.query.w;
