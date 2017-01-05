@@ -21,6 +21,9 @@ app.use(bodyParser.json());
 var apiRouter = require('./apiRouter');
 app.use('/api', apiRouter);
 
+var imageRouter = require('./imageRouter');
+app.use('/img', imageRouter);
+
 //  get App Root
 var pathsplit = __dirname.split("/");
 pathsplit[pathsplit.length - 1] = "";
