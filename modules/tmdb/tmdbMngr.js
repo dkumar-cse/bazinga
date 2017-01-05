@@ -48,7 +48,11 @@ tmdbMngr.tmdbTokenIdToTokenId = function (tmdbTokenId) {
 tmdbMngr.generateImageUrl = function (path) {
     var imageUrl = null;
     if(path!==null && path!=undefined){
-        imageUrl = "http:\/\/image.tmdb.org/t/p/original" + path;
+        if(path==="/default.png"){
+            imageUrl = "https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png";
+        }else{
+            imageUrl = "http:\/\/image.tmdb.org/t/p/original" + path;
+        }
     }else{
         imageUrl = "https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png";
     }
@@ -65,7 +69,8 @@ tmdbMngr.getMovieDetails = function (movieId) {
          * Set movieResult Values
          *
          */
-        movieResult.setBackdropPic(tmdbMngr.generateImageUrl(response.backdrop_path));
+        // movieResult.setBackdropPic(tmdbMngr.generateImageUrl(response.backdrop_path));
+        movieResult.setBackdropPic(response.backdrop_path);
         movieResult.setTmdbId(response.id);
         if(tmdbMngr.validImdb(response.imdb_id) === true) {
             movieResult.setImdbId(response.imdb_id);
@@ -76,7 +81,8 @@ tmdbMngr.getMovieDetails = function (movieId) {
         if(tmdbMngr.checkAdult(response.adult) === true) {
             movieResult.setAdult(true);
         }
-        movieResult.addPosterPic({ url : tmdbMngr.generateImageUrl(response.poster_path)});
+        // movieResult.addPosterPic({ url : tmdbMngr.generateImageUrl(response.poster_path)});
+        movieResult.addPosterPic({ url : response.poster_path});
         movieResult.setBudget(response.budget);
 
         // Set genres
@@ -147,5 +153,5 @@ tmdbMngr.getMovieCasts = function (movieId) {
     return deffered.promise;
 };
 
- 
+
 module.exports = tmdbMngr;

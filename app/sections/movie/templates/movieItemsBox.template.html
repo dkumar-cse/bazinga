@@ -13,7 +13,7 @@
 
                 <md-subheader class="md-no-sticky">Directors :</md-subheader>
                 <md-list-item class="md-2-line" ng-repeat="director in directors" >
-                  <img ng-src="{{director.profile_path}}?{{$index}}" class="casts-avatar" alt="{{director.name}}" />
+                  <img ng-src="/img/resize?url={{director.profile_path}}&w=130&h=120" class="casts-avatar" alt="{{director.name}}" />
                   <div class="list-item-text" layout="column">
                     <h3>{{ director.name }}</h3>
                     <div class="line-120 yellow-color"></div>
@@ -26,7 +26,7 @@
 
                 <md-subheader class="md-no-sticky">Writers :</md-subheader>
                 <md-list-item class="md-2-line" ng-repeat="writer in writers" >
-                  <img ng-src="{{writer.profile_path}}?{{$index}}" class="casts-avatar" alt="{{writer.name}}" />
+                  <img ng-src="/img/resize?url={{writer.profile_path}}&w=130&h=120" class="casts-avatar" alt="{{writer.name}}" />
                   <div class="list-item-text" layout="column">
                     <h3>{{ writer.name }}</h3>
                     <div class="line-120 green-color"></div>
@@ -39,7 +39,7 @@
 
                 <md-subheader class="md-no-sticky">Casts :</md-subheader>
                 <md-list-item class="md-2-line" ng-repeat="cast in casts | orderBy:'order'" >
-                  <img ng-src="{{cast.profile_path}}?{{$index}}" class="casts-avatar" alt="{{cast.name}}" />
+                  <img ng-src="/img/resize?url={{cast.profile_path}}&w=130&h=120" class="casts-avatar" alt="{{cast.name}}" />
                   <div class="list-item-text" layout="column">
                     <h3>{{ cast.name }}</h3>
                     <div class="line-120 red-color"></div>

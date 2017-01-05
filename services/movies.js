@@ -289,9 +289,9 @@ movies.getTmdbMovieIdFromMovieId = function (movieId) {
 var manipulateEachCast = function(casts) {
     for(var i=0;i<casts.length;i++) {
         if(!_.isNull(casts[i].profile_path) && casts[i].profile_path!==null){
-            casts[i].profile_path = tmdbMngr.generateImageUrl(casts[i].profile_path);
+            // casts[i].profile_path = tmdbMngr.generateImageUrl(casts[i].profile_path);
         }else{
-            casts[i].profile_path = "https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png";
+            casts[i].profile_path = "/default.png";//"https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png";
         }
     }
     return casts;
@@ -299,9 +299,9 @@ var manipulateEachCast = function(casts) {
 var manipulateEachCrew = function(crew) {
     for(var i=0;i<crew.length;i++) {
         if(!_.isNull(crew[i].profile_path) && crew[i].profile_path!==null){
-            crew[i].profile_path = tmdbMngr.generateImageUrl(crew[i].profile_path);
+            // crew[i].profile_path = tmdbMngr.generateImageUrl(crew[i].profile_path);
         }else{
-            crew[i].profile_path = "https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png";
+            crew[i].profile_path = "/default.png";//"https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png";
         }
     }
     return crew;

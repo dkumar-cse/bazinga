@@ -19,7 +19,8 @@ imgService.downloadImage = function(imgUrl, location) {
     var deffered = Q.defer();
     var imgTmdbUrl = tmdbMngr.generateImageUrl(imgUrl);
     var localOrigingalImgPath = location + imgUrl;
-
+console.log(localOrigingalImgPath);
+console.log(imgUrl);
     imgService.checkOrCreate(location).then(function(result) {
         if(result.msg==="folder_created" || result.msg==="folder_present") {
             console.log("Original Pics Directory created successfully!");
@@ -67,13 +68,13 @@ imgService.checkAndPersist = function(imgUrl) {
     var deffered = Q.defer();
     var imgTmdbUrl = tmdbMngr.generateImageUrl(imgUrl);
     var localOrigingalImgPath = localOrigingalImgLocation + imgUrl;
-    if(fse.existsSync(localOrigingalImgPath)) {console.log("22");
+    if(fse.existsSync(localOrigingalImgPath)) {
         deffered.resolve({res_code:"exists"});
-    } else {console.log("kkkk");
-        imgService.downloadImage(imgUrl, localOrigingalImgLocation).then(function(result){console.log("33");
-            if(result.res_code === "downloaded") {console.log("44");
+    } else {
+        imgService.downloadImage(imgUrl, localOrigingalImgLocation).then(function(result){
+            if(result.res_code === "downloaded") {
                 deffered.resolve({res_code:"downloaded"});
-            } else {console.log("55");
+            } else {
                 deffered.resolve({res_code:"error"});
             }
 
@@ -100,7 +101,7 @@ imgService.reScale = function(localOrigingalImgPath, location, imgUrl, options) 
       return deffered.promise;
 };
 
-imgService.getImage = function(imgUrl, options, res) {console.log(1);
+imgService.getImage = function(imgUrl, options, res) {console.log(1);console.log(imgUrl);
     var width = options.width;
     var height = options.height;
     var location = pic_root_location + "/x/" + width + "/" + height;
