@@ -15,6 +15,10 @@ var localOrigingalImgLocation = pic_root_location + "/x/o/p";
 
 imgService = module.exports;
 
+imgService.getCDNUrl = function(imgUrl) {
+    return process.env.CDNImgUrl +"?u="+ imgUrl;
+};
+
 imgService.downloadImage = function(imgUrl, location) {
     var deffered = Q.defer();
     var imgTmdbUrl = tmdbMngr.generateImageUrl(imgUrl);
@@ -49,7 +53,6 @@ imgService.checkOrCreate = function(location) {
     if (!fse.existsSync(location)){
         fse.mkdirs(location,function(err){
            if (err) {
-               console.log("ccc");
               console.log(err);
               return console.error(err);
            }

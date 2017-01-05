@@ -20,6 +20,7 @@ var tmdbMngr = require('../modules/tmdb/tmdbMngr');
 var omdbMngr = require('../modules/omdb/omdbMngr');
 var movieDetailsJson = require('../resources/movieDetailsJson');
 var cacheManager = require('../modules/cache/cacheManager');
+var imgService = require('../services/imgService');
 var async = require('async');
 
 var movieGoogler = require('../modules/googleSearch/movieGoogler');
@@ -277,6 +278,7 @@ movies.searchMovie = function(req, res) {
 //     });
 // }
 
+
 movies.getTmdbMovieIdFromMovieId = function (movieId) {
     var deffered = Q.defer();
     ItemsCollection.getItemFromCollection(movieId).then(function (movieJson) {
@@ -290,8 +292,14 @@ var manipulateEachCast = function(casts) {
     for(var i=0;i<casts.length;i++) {
         if(!_.isNull(casts[i].profile_path) && casts[i].profile_path!==null){
             // casts[i].profile_path = tmdbMngr.generateImageUrl(casts[i].profile_path);
+            if(process.env.useCDN==="true") {console.log("xxx");
+                casts[i].profile_path = imgService.getCDNUrl(casts[i].profile_path);
+                console.log(casts[i].profile_path);
+            } else {console.log("yyyy");
+                casts[i].profile_path = "/img/resize?u=" + casts[i].profile_path;
+            }
         }else{
-            casts[i].profile_path = "/default.png";//"https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png";
+            casts[i].profile_path = "/img/resize?u=/default.png";//"https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png";
         }
     }
     return casts;
@@ -300,8 +308,13 @@ var manipulateEachCrew = function(crew) {
     for(var i=0;i<crew.length;i++) {
         if(!_.isNull(crew[i].profile_path) && crew[i].profile_path!==null){
             // crew[i].profile_path = tmdbMngr.generateImageUrl(crew[i].profile_path);
+            if(process.env.useCDN===true) {
+                crew[i].profile_path = imgService.getCDNUrl(crew[i].profile_path);
+            }else {
+                crew[i].profile_path = "/img/resize?u=" + crew[i].profile_path;
+            }
         }else{
-            crew[i].profile_path = "/default.png";//"https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png";
+            crew[i].profile_path = "/img/resize?u=/default.png";//"https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png";
         }
     }
     return crew;
