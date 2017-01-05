@@ -294,8 +294,7 @@ var manipulateEachCast = function(casts) {
             // casts[i].profile_path = tmdbMngr.generateImageUrl(casts[i].profile_path);
             if(process.env.useCDN==="true") {console.log("xxx");
                 casts[i].profile_path = imgService.getCDNUrl(casts[i].profile_path);
-                console.log(casts[i].profile_path);
-            } else {console.log("yyyy");
+            } else {
                 casts[i].profile_path = "/img/resize?u=" + casts[i].profile_path;
             }
         }else{
