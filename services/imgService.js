@@ -19,8 +19,7 @@ imgService.downloadImage = function(imgUrl, location) {
     var deffered = Q.defer();
     var imgTmdbUrl = tmdbMngr.generateImageUrl(imgUrl);
     var localOrigingalImgPath = location + imgUrl;
-console.log(localOrigingalImgPath);
-console.log(imgUrl);
+
     imgService.checkOrCreate(location).then(function(result) {
         if(result.msg==="folder_created" || result.msg==="folder_present") {
             console.log("Original Pics Directory created successfully!");
@@ -45,7 +44,7 @@ console.log(imgUrl);
 
 };
 
-imgService.checkOrCreate = function(location) {console.log(location);
+imgService.checkOrCreate = function(location) {
     var deffered = Q.defer();
     if (!fse.existsSync(location)){
         fse.mkdirs(location,function(err){
@@ -86,37 +85,67 @@ imgService.checkAndPersist = function(imgUrl) {
 imgService.reScale = function(localOrigingalImgPath, location, imgUrl, options) {
     var localImgPath = location + imgUrl;
     var deffered = Q.defer();
-    imgService.checkOrCreate(location).then(function(result) {console.log(result);
+    imgService.checkOrCreate(location).then(function(result) {
         if(result.msg==="folder_created" || result.msg==="folder_present") {
             console.log("Pic specific Directory created successfully!");
-            sharp(localOrigingalImgPath)
-              .resize(parseInt(options.width), parseInt(options.height))
-              .toFile(localImgPath, function(err, info) {
-                console.log('File resizing to', localImgPath);
-                deffered.resolve({path:localImgPath});
-              });
+            if(options.crop===1) {
+                sharp(localOrigingalImgPath)
+                  .resize(parseInt(options.width), parseInt(options.height))
+                  .toFile(localImgPath, function(err, info) {
+                    console.log('File resizing to', localImgPath);
+                    deffered.resolve({path:localImgPath});
+                  });
+            } else if(options.preserveAspect===1) {
+                sharp(localOrigingalImgPath)
+                  .resize(parseInt(options.width), parseInt(options.height))
+                  .embed()
+                  .toFile(localImgPath, function(err, info) {
+                    console.log('File resizing to', localImgPath);
+                    deffered.resolve({path:localImgPath});
+                  });
+            } else {
+                deffered.resolve({err:"error in imgService.reScale"});
+            }
         }
     });
 
-      return deffered.promise;
+    return deffered.promise;
 };
 
-imgService.getImage = function(imgUrl, options, res) {console.log(1);console.log(imgUrl);
+var getImageFileLocation = function(options) {
     var width = options.width;
     var height = options.height;
+
     var location = pic_root_location + "/x/" + width + "/" + height;
+    if(options.crop===1) {
+        location = location + "/crop";
+    } else if(options.preserveAspect===1) {
+        location = location + "/aspect";
+    }
+    return location;
+};
+
+imgService.getImage = function(imgUrl, options, res) {
+    var width = options.width;
+    var height = options.height;
+    var location = getImageFileLocation(options);
+
     var localImgPath = location + imgUrl;
-console.log(localImgPath);
-    if (fse.existsSync(localImgPath)) {console.log(2);
+
+    if (fse.existsSync(localImgPath)) {
         res.sendFile(localImgPath);
-    } else {console.log(3);
+    } else {
         // check for original image
         var localOrigingalImgPath = localOrigingalImgLocation + imgUrl;
 
-        imgService.checkAndPersist(imgUrl).then(function(result) {console.log("11");
-            if(result.res_code==="exists" || result.res_code==="downloaded") {console.log("11");
-                imgService.reScale(localOrigingalImgPath, location, imgUrl, options).then(function(reSizedImg) {
-                    res.sendFile(reSizedImg.path);
+        imgService.checkAndPersist(imgUrl).then(function(result) {
+            if(result.res_code==="exists" || result.res_code==="downloaded") {
+                imgService.reScale(localOrigingalImgPath, location, imgUrl, options).then(function(reScaleResult) {
+                    if(reScaleResult.err) {
+                        res.json({err:"error in while getting image"});
+                    } else {
+                        res.sendFile(reScaleResult.path);
+                    }
                 });
             } else {
                 res.json({msg:"some problem occured"});

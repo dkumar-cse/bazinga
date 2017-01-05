@@ -22,8 +22,12 @@ router.get('/resize', function(req, res) {console.log("jjj");
 console.log(req.query);
     var imgUrl = req.query.url;
     var options = {};
+
     options.width = req.query.w;
     options.height = req.query.h;
+    options.crop = parseInt(req.query.c);     //  1->crop,  0 -> D'nt CARE
+    options.preserveAspect = parseInt(req.query.a);   //  1->preserver aspect ratio,  0-> D'nt CARE
+
     imgService.getImage(imgUrl, options, res);
 });
 
