@@ -11,6 +11,7 @@ var express = require("express");
 var router = express.Router();
 
 var movies = require('../services/movies');
+var personService = require('../services/personService');
 var movieGoogler = require('../modules/googleSearch/movieGoogler');
 
 router.get('/movie/casts', function(req, res) {
@@ -35,6 +36,10 @@ router.get('/movie/googleresult', function(req, res) {
             res.json(result);
         });
     });
+});
+
+router.get('/person', function(req, res) {
+    personService.getPersonDetail(req, res);
 });
 
 router.get('/movie', function(req, res) {

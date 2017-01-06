@@ -125,7 +125,7 @@ movies.getMovieResponseByID = function(movieId) {
                     });
                 } else {console.log(3);
                     //cacheManager.set(cacheKey, JSON.stringify(result)).then(function(cacheSetResult) {
-                        deffered.resolve({res:"got from DB", result: result });
+                        deffered.resolve({res:"got from DB", result: resultFromCollection });
                         // res.json({res:"got from DB", result: result });
                     //});
                     //res.json({res:"got from DB", result: result });
