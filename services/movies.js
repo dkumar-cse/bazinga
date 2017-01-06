@@ -102,17 +102,17 @@ movies.getMovieResponseByID = function(movieId) {
 
     cacheManager.get(cacheKey).then(function(cacheResult){
         if(cacheResult  === null ) {
-            ItemsCollection.getItemFromCollection(movieId).then(function (result) {console.log(1);
-                if(movies.checkForHalfResult(result)===true) {console.log(2);
-                    var tmdbId = result.tmdbId;
+            ItemsCollection.getItemFromCollection(movieId).then(function (resultFromCollection) {console.log(1);
+                if(movies.checkForHalfResult(resultFromCollection)===true) {console.log(2);
+                    var tmdbId = resultFromCollection.tmdbId;
                     tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {console.log(5);
                         var imdbId = tmdbResponse.imdbId;console.log(imdbId);
                         omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {console.log(6);
                             var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
-                            response.id = result._id;
-                            response._id = result._id;console.log("here");
-                            ItemsCollection.updateItemInCollection(response).then(function(result){
-                                deffered.resolve({res:"got from external_api", result: result });
+                            response.id = resultFromCollection._id;
+                            response._id = resultFromCollection._id;console.log("here");
+                            ItemsCollection.updateItemInCollection(response).then(function(resultFromUpdtItem){
+                                deffered.resolve({res:"got from external_api", result: resultFromUpdtItem.result });
                             });
                         });
                         // var response = tmdbResponse;
