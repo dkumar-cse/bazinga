@@ -46,10 +46,10 @@ this.requestApi = function(apiUrl, params) {
     });
 
     rp(options).then(function(response) {
-	deferred.resolve(response);
+		deferred.resolve(response);
     })
     .catch(function(err) {
-	deferred.reject(err);
+		deferred.reject(err);
     });
 
     return deferred.promise;
@@ -143,6 +143,13 @@ omdbServices.getByIdAndTitle = function(imdbId, title, type, year) {
 	params.v = apiVersion; //API version
 	params.tomatoes = true; //Include Rotten Tomatoes ratings. - optional,  default-false   (false, true)
 	this.requestApi(apiUrl, params).then(function(response) {
+		if(response.Response===false) {
+			response.status_code = process.env.failure_status;
+			response.error_msg = [{msg : response.Error}];
+
+		} else {
+			response.status_code = process.env.success_status;
+		}
 	    deffered.resolve(response);
 	});
     }
@@ -154,7 +161,7 @@ omdbServices.getMovieByIdAndTitle = function(imdbId, title, year) {
     var deffered = Q.defer();
     var type = itemType.movie;
     omdbServices.getByIdAndTitle(imdbId, title, type, year).then(function(response) {
-	deffered.resolve(response);
+		deffered.resolve(response);
     });
 
     return deffered.promise;

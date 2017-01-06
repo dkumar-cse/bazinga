@@ -91,23 +91,29 @@ imgService.reScale = function(localOrigingalImgPath, location, imgUrl, options) 
     imgService.checkOrCreate(location).then(function(result) {
         if(result.msg==="folder_created" || result.msg==="folder_present") {
             console.log("Pic specific Directory created successfully!");
-            if(options.preserveAspect===1) {
-                sharp(localOrigingalImgPath)
-                  .resize(parseInt(options.width), parseInt(options.height))
-                  .embed()
-                  .toFile(localImgPath, function(err, info) {
-                    console.log('File resizing to', localImgPath);
-                    deffered.resolve({path:localImgPath});
-                  });
-            } else {
-                // crop by default
-                sharp(localOrigingalImgPath)
-                  .resize(parseInt(options.width), parseInt(options.height))
-                  .toFile(localImgPath, function(err, info) {
-                    console.log('File resizing to', localImgPath);
-                    deffered.resolve({path:localImgPath});
-                  });
+            console.log(options.width);
+            if(options.width==="o" && options.height === "p"){console.log(options.width);
+                deffered.resolve({path:localOrigingalImgPath});
+            } else {console.log(options.height);
+                if(options.preserveAspect===1) {
+                    sharp(localOrigingalImgPath)
+                      .resize(parseInt(options.width), parseInt(options.height))
+                      .embed()
+                      .toFile(localImgPath, function(err, info) {
+                        console.log('File resizing to', localImgPath);
+                        deffered.resolve({path:localImgPath});
+                      });
+                } else {
+                    // crop by default
+                    sharp(localOrigingalImgPath)
+                      .resize(parseInt(options.width), parseInt(options.height))
+                      .toFile(localImgPath, function(err, info) {
+                        console.log('File resizing to', localImgPath);
+                        deffered.resolve({path:localImgPath});
+                      });
+                }
             }
+
         }
     });
 

@@ -1,5 +1,4 @@
 
-'use strict';
 var redis = require('redis');
 var Q = require('q');
 var _ = require('lodash');
@@ -71,31 +70,34 @@ omdbManager.getMovieDetails = function (imdbId) {
          * Set movieResult Values
          *
          */
+        if(parseInt(response.status_code)===parseInt(process.env.success_status)) {
+            movieResult.status_code = process.env.success_status;
+            movieResult.setYear(response.Year);
+            movieResult.setAwardInfo(response.Awards);
+            movieResult.setImdbRating(response.imdbRating);
+            movieResult.setImdbVotes(response.imdbVotes);
+            movieResult.setPlot(response.Plot);
 
-        movieResult.setYear(response.Year);
-        movieResult.setAwardInfo(response.Awards);
-        movieResult.setImdbRating(response.imdbRating);
-        movieResult.setImdbVotes(response.imdbVotes);
-        movieResult.setPlot(response.Plot);
+            movieResult.addDirector(omdbManager.getDirectorsJson(response.Director));
+            movieResult.setWriters(omdbManager.getWritersJson(response.Writer));
+            movieResult.setCasts(omdbManager.getCastsJson(response.Actors));
+            movieResult.addImage(response.Poster);
 
-        movieResult.addDirector(omdbManager.getDirectorsJson(response.Director));
-        movieResult.setWriters(omdbManager.getWritersJson(response.Writer));
-        movieResult.setCasts(omdbManager.getCastsJson(response.Actors));
-        movieResult.addImage(response.Poster);
-
-        movieResult.setTomatoMeter(response.tomatoMeter);
-        movieResult.setTomatoRating(response.tomatoRating);
-        movieResult.setTomatoReviews(response.tomatoReviews);
-        movieResult.setTomatoFresh(response.tomatoFresh);
-        movieResult.setTomatoRotten(response.tomatoRotten);
-        movieResult.setTomatoConsensus(response.tomatoConsensus);
-        movieResult.setTomatoUserMeter(response.tomatoUserMeter);
-        movieResult.setTomatoUserRating(response.tomatoUserRating);
-        movieResult.setTomatoUserReviews(response.tomatoUserReviews);
-        movieResult.setTomatoURL(response.tomatoURL);
-
+            movieResult.setTomatoMeter(response.tomatoMeter);
+            movieResult.setTomatoRating(response.tomatoRating);
+            movieResult.setTomatoReviews(response.tomatoReviews);
+            movieResult.setTomatoFresh(response.tomatoFresh);
+            movieResult.setTomatoRotten(response.tomatoRotten);
+            movieResult.setTomatoConsensus(response.tomatoConsensus);
+            movieResult.setTomatoUserMeter(response.tomatoUserMeter);
+            movieResult.setTomatoUserRating(response.tomatoUserRating);
+            movieResult.setTomatoUserReviews(response.tomatoUserReviews);
+            movieResult.setTomatoURL(response.tomatoURL);
+        } else {
+            movieResult.status_code = process.env.failure_status;
+            movieResult.error_msg = response.error_msg;
+        }
         deffered.resolve(movieResult);
-
     });
 
     return deffered.promise;

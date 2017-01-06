@@ -56,9 +56,12 @@ movies.getMovieFromID = function(movieId) {
                 if(movies.checkForHalfResult(result)===true || true) {
                     var tmdbId = result.tmdbId;
                     tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {
+                        var response = tmdbResponse;
                         var imdbId = tmdbResponse.imdbId;
-                        omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {console.log(omdbResponse);
-                            var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
+                        omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+                            if(parseInt(omdbResponse.status_code) === parseInt(process.env.status_success)) {
+                                response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
+                            }
                             response.id = result._id;
                             response._id = result._id;
                             ItemsCollection.updateItemInCollection(response).then(function(result){
@@ -99,15 +102,15 @@ movies.getMovieResponseByID = function(movieId) {
 
     cacheManager.get(cacheKey).then(function(cacheResult){
         if(cacheResult  === null ) {
-            ItemsCollection.getItemFromCollection(movieId).then(function (result) {
-                if(movies.checkForHalfResult(result)===true) {
+            ItemsCollection.getItemFromCollection(movieId).then(function (result) {console.log(1);
+                if(movies.checkForHalfResult(result)===true) {console.log(2);
                     var tmdbId = result.tmdbId;
-                    tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {
-                        var imdbId = tmdbResponse.imdbId;
-                        omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {
+                    tmdbMngr.getMovieDetails(tmdbId).then(function(tmdbResponse) {console.log(5);
+                        var imdbId = tmdbResponse.imdbId;console.log(imdbId);
+                        omdbMngr.getMovieDetails(imdbId).then(function(omdbResponse) {console.log(6);
                             var response = _.mergeWith(tmdbResponse, omdbResponse, customizer);
                             response.id = result._id;
-                            response._id = result._id;
+                            response._id = result._id;console.log("here");
                             ItemsCollection.updateItemInCollection(response).then(function(result){
                                 deffered.resolve({res:"got from external_api", result: result });
                             });
@@ -120,7 +123,7 @@ movies.getMovieResponseByID = function(movieId) {
                         //     // res.json(result);
                         // });
                     });
-                } else {
+                } else {console.log(3);
                     //cacheManager.set(cacheKey, JSON.stringify(result)).then(function(cacheSetResult) {
                         deffered.resolve({res:"got from DB", result: result });
                         // res.json({res:"got from DB", result: result });
@@ -128,7 +131,7 @@ movies.getMovieResponseByID = function(movieId) {
                     //res.json({res:"got from DB", result: result });
                 }
             });
-        } else {
+        } else {console.log(4);
             deffered.resolve({res:"got from CACHE", result: JSON.parse(cacheResult) });
             // res.json({res:"got from CACHE", result: JSON.parse(cacheResult) });
         }

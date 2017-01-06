@@ -33,7 +33,8 @@ define(['boost', 'q'], function (app, Q, mdc) {
             $scope.releaseYear = result.year;
             $scope.title = result.title;
             $scope.backdrop_pic = result.backdropPic;
-            
+            console.log($scope.backdrop_pic);
+
         });
 
         var MovieCastsService = $resource('/api/movie/casts', {id:movieId});
