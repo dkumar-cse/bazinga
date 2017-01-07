@@ -3,10 +3,12 @@ process.env.ImgLocation = "/usr/local/bazinga/pics";
 process.env.useCDN = "false";
 process.env.CDNImgUrl = "http://d3q1qp8oyephmb.cloudfront.net/img/resize";
 
-//  STATUS CODES
-process.env.success_status = "SUCCESS009";
+//  server log file ( node log)
+process.env.serverLogFile = "/Users/dkumar8/reviewSite/logs/bazinga2.log";
 
-process.env.failure_status = "ERROR001";
+//  STATUS CODES
+process.env.success_status = "1111";
+process.env.failure_status = "1000";
 
 
 //  TMDB

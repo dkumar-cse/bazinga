@@ -8,10 +8,14 @@
 var request = require('request');
 var _ = require('lodash');
 var Q = require('q');
+var logger = require('../modules/utils/logger');
 var PersonsCollection = require('../modules/mongo/persons/PersonsCollection');
 var tmdbPeopleService = require('../modules/tmdb/tmdbPeopleService');
 var cacheManager = require('../modules/cache/cacheManager');
 var personService = module.exports;
+
+
+
 
 
 personService.getPersonDetail = function(req, res) {
@@ -50,6 +54,7 @@ personService.getPersonResponseByID = function(personId) {
                     });
                 } else {console.log(3);
                     //cacheManager.set(cacheKey, JSON.stringify(result)).then(function(cacheSetResult) {
+logger.info(resultFromCollection);
                         deffered.resolve({res:"got from DB", result: resultFromCollection });
                         // res.json({res:"got from DB", result: result });
                     //});
